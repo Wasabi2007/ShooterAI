@@ -1,0 +1,42 @@
+﻿using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+
+
+[ExecuteInEditMode]
+public class Node : MonoBehaviour {
+
+	public bool ducking_spot;
+	public float degree;
+
+	public List<Node> Connection;
+
+	[HideInInspector]
+	public int value = 0;
+
+	[HideInInspector]
+	public Node parrent = null;
+
+	// Use this for initialization
+	void Start () {
+		foreach (Node n in Connection)
+			n.add_node (this);
+	}
+
+	// Update is called once per frame
+	void Update () {
+		transform.localRotation = Quaternion.AngleAxis (degree,Vector3.forward);
+		degree = degree - 360 * Mathf.Floor (degree / 360);
+	}
+
+	public void add_node(Node n){
+		if(!Connection.Contains(n))
+			Connection.Add(n);
+	}
+
+	void OnDrawGizmos(){
+		foreach (Node n in Connection)
+			Gizmos.DrawLine (transform.position, n.transform.position);
+	}
+}
