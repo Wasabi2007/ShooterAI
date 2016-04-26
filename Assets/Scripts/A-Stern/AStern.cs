@@ -6,17 +6,40 @@ using Priority_Queue;
 [ExecuteInEditMode]
 public class AStern : MonoBehaviour {
 
-
+	public LayerMask hit_mask;
+	public bool searchgrid = false;
 	private Node[] nodes;
 
 	// Use this for initialization
 	void Start () {
-		nodes = GetComponentsInChildren<Node> ();
+		find_connections ();
 	}
 
 	// Update is called once per frame
 	void Update () {
-	
+		if (searchgrid) {
+			searchgrid = false;
+			find_connections ();
+		}
+	}
+
+	void find_connections(){
+		nodes = transform.GetComponentsInChildren<Node> ();
+		foreach (Node n in nodes) {
+			n.clear ();
+		}
+
+		for (int i = 0; i < nodes.Length;++i) {
+			Node n = nodes [i];
+			for (int j = i+1; j < nodes.Length;++j) {
+				Node n2 = nodes [j];
+				RaycastHit2D hit = Physics2D.Raycast (n.transform.position, (n2.transform.position - n.transform.position).normalized,1000000,hit_mask);
+				if (!hit) {
+					n.add_node (n2);
+					n2.add_node (n);
+				}
+			}
+		}
 	}
 
 	void reset(){

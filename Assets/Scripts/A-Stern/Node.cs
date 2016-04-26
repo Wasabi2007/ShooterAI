@@ -10,6 +10,7 @@ public class Node : MonoBehaviour {
 	public bool ducking_spot;
 	public float degree;
 
+	[HideInInspector]
 	public List<Node> Connection;
 
 	[HideInInspector]
@@ -20,14 +21,16 @@ public class Node : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		foreach (Node n in Connection)
-			n.add_node (this);
 	}
 
 	// Update is called once per frame
 	void Update () {
 		transform.localRotation = Quaternion.AngleAxis (degree,Vector3.forward);
 		degree = degree - 360 * Mathf.Floor (degree / 360);
+	}
+
+	public void clear(){
+		Connection.Clear ();
 	}
 
 	public void add_node(Node n){
