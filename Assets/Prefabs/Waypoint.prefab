@@ -10,7 +10,7 @@ GameObject:
   - 4: {fileID: 404658}
   - 212: {fileID: 21285742}
   - 114: {fileID: 11480344}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: Waypoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,6 +43,8 @@ MonoBehaviour:
   ducking_spot: 0
   degree: 0
   Connection: []
+  value: 0
+  parrent: {fileID: 0}
 --- !u!212 &21285742
 SpriteRenderer:
   m_ObjectHideFlags: 1
