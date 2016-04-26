@@ -13,16 +13,23 @@ public class AStern : MonoBehaviour {
 	void Start () {
 		nodes = GetComponentsInChildren<Node> ();
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 	
 	}
 
+	void reset(){
+		foreach (Node n in nodes) {
+			n.value = 0;
+			n.parrent = null;
+		}
+	}
+
 	public List<Node> get_path(Node start,Node end){
 		
-		SimplePriorityQueue<Node> openlist = new SimplePriorityQueue<> ();
-		List<Node> closedlist = new List<>();
+		SimplePriorityQueue<Node> openlist = new SimplePriorityQueue<Node> ();
+		List<Node> closedlist = new List<Node>();
 
 		start.value = 0;
 		openlist.Enqueue (start, 0);
@@ -32,23 +39,32 @@ public class AStern : MonoBehaviour {
 			if (current_node == end) {
 				break;
 			}
-			closedlist.Add (closedlist);
+
+			closedlist.Add (current_node);
 
 			foreach (Node n in current_node.Connection) {
-				if( openlist.Contains(n))n.value=0;
 				if( closedlist.Contains(n))continue;
-				var tentative_g = current_node.value + Vector3.Distance(current_node.transform.position, n.transform.position);
+				int tentative_g = current_node.value + Mathf.RoundToInt(Vector3.Distance(current_node.transform.position, n.transform.position));
 
 				if(openlist.Contains(n) && tentative_g >= n.value)continue;
 
 				n.parrent = current_node;
 				n.value = tentative_g;
-				var f = tentative_g + Vector3.Distance(end.transform.position, n.transform.position);
+				int f = tentative_g + Mathf.RoundToInt(Vector3.Distance(end.transform.position, n.transform.position));
 				if (openlist.Contains (n))
 					openlist.UpdatePriority (n, f);
 				else
 					openlist.Enqueue (n, f);
 			}
 		}
+
+		List<Node> way = new List<Node>();
+
+		for(Node prev = end; prev != null; prev = prev.parrent){
+			way.Add (prev);
+		}
+		way.Reverse ();
+		reset ();
+		return way;
 	}
 }

@@ -36,7 +36,10 @@ public class Node : MonoBehaviour {
 	}
 
 	void OnDrawGizmos(){
-		foreach (Node n in Connection)
+		foreach (Node n in Connection) {
+			if (!n)
+				continue;
 			Gizmos.DrawLine (transform.position, n.transform.position);
+		}
 	}
 }
