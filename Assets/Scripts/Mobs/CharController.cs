@@ -11,6 +11,7 @@ public class CharController : MonoBehaviour {
 
 	public Bullet bullet;
 	public SingleUnityLayer BulletLayer;
+	public LayerMask DuckingLayer;
 
 	public int Ammo;
 	public int AmmoMax;
@@ -19,6 +20,7 @@ public class CharController : MonoBehaviour {
 	public float speed;
 
 	public bool NPC;
+	public bool npc_ducking = false;//Debug
 
 	private CharState current_state;
 
@@ -39,7 +41,10 @@ public class CharController : MonoBehaviour {
 		render = GetComponent<SpriteRenderer> ();
 		//rigid.constraints = RigidbodyConstraints2D.FreezeAll;
 		if (NPC) {
-			current_state = new NPCStanding ();
+			if (npc_ducking)
+				current_state = new NPCDucking ();
+			else
+				current_state = new NPCStanding();
 		} else {
 			current_state = new PlayerStanding ();
 		}
@@ -77,6 +82,18 @@ public class CharController : MonoBehaviour {
 
 	}
 
+	public bool is_behind_duckspot (Vector3 target_position){
+		var rel_pos = (Vector2)target_position-rigid.position;
+		var hit = Physics2D.Raycast (rigid.position, rel_pos.normalized,float.MaxValue,DuckingLayer);
+		return !hit;
+	}
+
+	public bool has_free_shoot (Vector3 target_position){
+		var rel_pos = (Vector2)target_position-rigid.position;
+		var hit = Physics2D.Raycast (rigid.position, rel_pos.normalized);
+		return !hit;
+	}
+
 	public void movedirection(Vector3 dir){
 		move_direction = Vector3.Normalize(dir);
 	}
@@ -106,5 +123,14 @@ public class CharController : MonoBehaviour {
 
 	public void applydamage(float damage){
 		Health -= damage;
+	}
+
+	public void applydirecteddamage(System.Object[] info){
+		float damage = (float)info [0];
+		Vector2 dir = ((Vector2)info [1])*-1;
+		if (!Physics2D.Raycast (rigid.position, dir, float.MaxValue, DuckingLayer) || current_state.state != States.Ducking) {
+			Health -= damage;
+			GameObject.Destroy ((Object)info [2]);
+		}
 	}
 }
