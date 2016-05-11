@@ -34,7 +34,7 @@ public class PlayerWalking : CharState
 		}
 
 		if (Input.GetKey (KeyCode.Q)) {
-			owner.changestate (new PlayerDucking ());
+			owner.changestate (new PlayerInCover ());
 		} else {
 			owner.movedirection (dir);
 		}

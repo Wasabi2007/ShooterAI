@@ -9,7 +9,7 @@ public class AStern : MonoBehaviour {
 	public LayerMask hit_mask;
 	public bool searchgrid = false;
 	private Node[] nodes;
-	private HashSet<Node> ducking_nodes = new HashSet<Node>();
+	private HashSet<Node> cover_nodes = new HashSet<Node>();
 
 	// Use this for initialization
 	void Start () {
@@ -24,10 +24,10 @@ public class AStern : MonoBehaviour {
 		}
 	}
 
-	Node get_nearest_duck_node(Vector2 position,Vector2 target_position){
+	Node get_nearest_cover_node(Vector2 position,Vector3 target_position){
 		float current_min_dist = float.MaxValue;
 		Node current_min_node = null;
-		foreach (Node n in ducking_nodes) {
+		foreach (Node n in cover_nodes) {
 			Vector3 rel_pos = target_position - n.transform.position;
 			float angle = Mathf.Atan2(rel_pos.y,rel_pos.x);
 			if (!n.in_use && Mathf.Abs((float)n.duck_direction-angle)<45) { //Warning doesn't work with angles > 360 or negativ angles
@@ -46,12 +46,12 @@ public class AStern : MonoBehaviour {
 		foreach (Node n in nodes) {
 			n.clear ();
 		}
-		ducking_nodes.Clear ();
+		cover_nodes.Clear ();
 
 		for (int i = 0; i < nodes.Length;++i) {
 			Node n = nodes [i];
 			if (n.ducking_spot) {
-				ducking_nodes.Add (n);
+				cover_nodes.Add (n);
 			}
 			for (int j = i+1; j < nodes.Length;++j) {
 				Node n2 = nodes [j];

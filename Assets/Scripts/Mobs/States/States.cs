@@ -5,7 +5,7 @@ public enum States
 {
 	Standing,
 	Walking,
-	Ducking,
+	InCover,
 	Shooting
 }
 

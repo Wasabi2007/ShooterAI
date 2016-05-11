@@ -11,7 +11,7 @@ public class CharController : MonoBehaviour {
 
 	public Bullet bullet;
 	public SingleUnityLayer BulletLayer;
-	public LayerMask DuckingLayer;
+	public LayerMask CoverLayer;
 
 	public int Ammo;
 	public int AmmoMax;
@@ -20,7 +20,7 @@ public class CharController : MonoBehaviour {
 	public float speed;
 
 	public bool NPC;
-	public bool npc_ducking = false;//Debug
+	public bool npc_in_cover = false;//Debug
 	public AStern nav_path;
 
 	[HideInInspector]
@@ -43,12 +43,13 @@ public class CharController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		root = new UtilFail ();
 		rigid = GetComponent<Rigidbody2D> ();
 		render = GetComponent<SpriteRenderer> ();
 		//rigid.constraints = RigidbodyConstraints2D.FreezeAll;
 		if (NPC) {
-			if (npc_ducking)
-				current_state = new NPCDucking ();
+			if (npc_in_cover)
+				current_state = new NPCInCover ();
 			else
 				current_state = new NPCStanding();
 		} else {
@@ -60,8 +61,8 @@ public class CharController : MonoBehaviour {
 		return move_direction.sqrMagnitude >= 0.00001 || current_state.state == States.Walking || rigid.velocity.sqrMagnitude >= 0.00001 ;
 	}
 
-	public bool isducking(){
-		return current_state.state == States.Ducking;
+	public bool isincover(){
+		return current_state.state == States.InCover;
 	}
 
 	public States currentstate(){
@@ -79,7 +80,8 @@ public class CharController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		current_state.update (this);
-		root.Update (0, gameObject);
+		if(NPC)
+			root.Update (0, gameObject);
 		rigid.MovePosition (rigid.position+(Vector2)(move_direction*speed*Time.deltaTime));
 
 		if (walk_progress < 1.0f) {
@@ -89,9 +91,9 @@ public class CharController : MonoBehaviour {
 
 	}
 
-	public bool is_behind_duckspot (Vector3 target_position){
+	public bool is_behind_cover (Vector3 target_position){
 		var rel_pos = (Vector2)target_position-rigid.position;
-		var hit = Physics2D.Raycast (rigid.position, rel_pos.normalized,float.MaxValue,DuckingLayer);
+		var hit = Physics2D.Raycast (rigid.position, rel_pos.normalized,float.MaxValue,CoverLayer);
 		return !hit;
 	}
 
@@ -135,7 +137,7 @@ public class CharController : MonoBehaviour {
 	public void applydirecteddamage(System.Object[] info){
 		float damage = (float)info [0];
 		Vector2 dir = ((Vector2)info [1])*-1;
-		if (!Physics2D.Raycast (rigid.position, dir, float.MaxValue, DuckingLayer) || current_state.state != States.Ducking) {
+		if (!Physics2D.Raycast (rigid.position, dir, float.MaxValue, CoverLayer) || current_state.state != States.InCover) {
 			Health -= damage;
 			GameObject.Destroy ((Object)info [2]);
 		}

@@ -34,7 +34,7 @@ public class PlayerShooting : CharState
 		} else if (Input.GetKey (KeyCode.W) || Input.GetKey (KeyCode.S) || Input.GetKey (KeyCode.A) || Input.GetKey (KeyCode.D)) {
 			owner.changestate (new PlayerWalking ());
 		} else if (Input.GetKeyDown (KeyCode.Q)) {
-			owner.changestate (new PlayerDucking ());
+			owner.changestate (new PlayerInCover ());
 		} else {
 			owner.changestate (new PlayerStanding ());	
 		}

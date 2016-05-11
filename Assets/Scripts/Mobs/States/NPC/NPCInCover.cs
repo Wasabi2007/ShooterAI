@@ -3,9 +3,9 @@ using System;
 using System.Collections;
 
 
-public class NPCDucking : CharState
+public class NPCInCover : CharState
 {
-	public NPCDucking ():base(States.Ducking)
+	public NPCInCover ():base(States.InCover)
 	{
 	}
 		

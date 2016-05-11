@@ -20,7 +20,7 @@ public class PlayerStanding : CharState
 		}
 
 		if (Input.GetKeyDown (KeyCode.Q)) {
-			owner.changestate (new PlayerDucking ());
+			owner.changestate (new PlayerInCover ());
 		}
 
 		owner.target (Camera.main.ScreenToWorldPoint(Input.mousePosition));
