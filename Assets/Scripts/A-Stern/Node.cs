@@ -7,8 +7,18 @@ using System.Linq;
 [ExecuteInEditMode]
 public class Node : MonoBehaviour {
 
+	public enum direction{
+		NOTRH = 90,
+		SOUTH = 270,
+		EAST = 0,
+		WEST = 180,
+	}
+
 	public bool ducking_spot;
-	public float degree;
+	public direction duck_direction;
+
+	[HideInInspector]
+	public bool in_use;
 
 	[HideInInspector]
 	public List<Node> Connection;
@@ -25,8 +35,8 @@ public class Node : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		transform.localRotation = Quaternion.AngleAxis (degree,Vector3.forward);
-		degree = degree - 360 * Mathf.Floor (degree / 360);
+		transform.localRotation = Quaternion.AngleAxis ((float)duck_direction,Vector3.forward);
+		duck_direction = duck_direction;
 	}
 
 	public void clear(){
