@@ -21,6 +21,10 @@ public class CharController : MonoBehaviour {
 
 	public bool NPC;
 	public bool npc_ducking = false;//Debug
+	public AStern nav_path;
+
+	[HideInInspector]
+	public Node claimend_node;
 
 	private CharState current_state;
 
@@ -33,6 +37,8 @@ public class CharController : MonoBehaviour {
 
 	private Rigidbody2D rigid;
 	private SpriteRenderer render;
+
+	private BehaviourNode root;
 
 
 	// Use this for initialization
@@ -73,6 +79,7 @@ public class CharController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		current_state.update (this);
+		root.Update (0, gameObject);
 		rigid.MovePosition (rigid.position+(Vector2)(move_direction*speed*Time.deltaTime));
 
 		if (walk_progress < 1.0f) {

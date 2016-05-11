@@ -7,5 +7,5 @@ public interface BehaviourInterface  {
 	void Activate ();
 	void Deactivate ();
 	void ChildTerminated (BehaviourInterface child,bool result);
-	void Update(float dt);
+	void Update(float dt, GameObject go);
 }

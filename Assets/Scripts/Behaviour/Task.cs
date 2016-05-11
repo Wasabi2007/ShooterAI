@@ -17,7 +17,7 @@ public abstract class Task : LeafNode , BehaviourInterface {
 	}
 	public virtual void ChildTerminated (BehaviourInterface child,bool result){}
 
-	public virtual void Update(float dt){
+	public virtual void Update(float dt, GameObject go){
 	}
 
 

@@ -26,9 +26,9 @@ public abstract class BehaviourNode : ParentNode,LeafNode {
 		childNodes.Add (child);
 	}
 
-	public virtual void Update(float dt){
+	public virtual void Update(float dt, GameObject go){
 		foreach (LeafNode child in childNodes)
 			if(child.IsActive)
-				child.Update (dt);
+				child.Update (dt,go);
 	}
 }
