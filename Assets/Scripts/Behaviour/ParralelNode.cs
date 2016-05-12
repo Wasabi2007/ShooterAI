@@ -6,33 +6,33 @@ public class ParralelNode : BehaviourNode {
 
 	int childReturns = 0;
 
-	public override void Activate ()
+	public override void Activate (GameObject go)
 	{
-		base.Activate ();
+		base.Activate (go);
 		childReturns = 0;
 		foreach (LeafNode childNode in childNodes) {
-			childNode.Activate();
+			childNode.Activate(go);
 		}
 	}
 
-	public override void ChildTerminated (BehaviourInterface child,bool result)
+	public override void ChildTerminated (GameObject go,BehaviourInterface child,bool result)
 	{
-		child.Deactivate ();
+		child.Deactivate (go);
 		childReturns++;
 		if (!result){
 			if(!isRoot){
-				parentNode.ChildTerminated(this,false);
+				parentNode.ChildTerminated(go,this,false);
 			}else{
-				Deactivate();
+				Deactivate(go);
 			}
 		}
 
 		if(!isRoot && childReturns >= childNodes.Count){
-			parentNode.ChildTerminated(this,true);
+			parentNode.ChildTerminated(go,this,true);
 		}
 
 		if (isRoot && childReturns >= childNodes.Count) {
-			Deactivate();
+			Deactivate(go);
 		}
 		
 	}

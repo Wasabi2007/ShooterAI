@@ -13,16 +13,16 @@ public abstract class BehaviourNode : ParentNode,LeafNode {
 
 	protected bool isRoot { get { return (parentNode == null || parentNode == this); } }
 
-	public virtual void Activate (){
+	public virtual void Activate (GameObject go){
 		isActive = true;
 	}
-	public virtual void Deactivate (){
+	public virtual void Deactivate (GameObject go){
 		isActive = false;
 		foreach (LeafNode childNode in ChildNodes) {
-			childNode.Deactivate();
+			childNode.Deactivate(go);
 		}
 	}
-	public abstract void ChildTerminated (BehaviourInterface child,bool result);
+	public abstract void ChildTerminated (GameObject go,BehaviourInterface child,bool result);
 
 	void AddChild (LeafNode child){
 		ChildNodes.Add (child);

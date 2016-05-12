@@ -3,25 +3,25 @@ using System.Collections;
 
 public class UtilFail : BehaviourNode {
 
-	public override void Activate ()
+	public override void Activate (GameObject go)
 	{
-		base.Activate ();
-		if (childNodes.Count > 1) {
+		base.Activate (go);
+		if (ChildNodes.Count > 1) {
 			Debug.LogWarning("UtilFail Nodes only support 1 ChildNode. Only the first Child will be executet.");
 		}
 
-		if (childNodes.Count > 0){
-			childNodes[0].Activate();
+		if (ChildNodes.Count > 0){
+			ChildNodes[0].Activate(go);
 		}
 	}
 
-	public override void ChildTerminated (BehaviourInterface child, bool result)
+	public override void ChildTerminated (GameObject go,BehaviourInterface child, bool result)
 	{
-		childNodes [0].Deactivate ();
+		ChildNodes [0].Deactivate (go);
 		if (result) {
-						childNodes [0].Activate ();
-				} else {
-					parentNode.ChildTerminated(this,false);
-				}
+				ChildNodes [0].Activate (go);
+		} else {
+			parentNode.ChildTerminated(go,this,false);
+		}
 	}
 }

@@ -5,38 +5,38 @@ public class Selector : BehaviourNode {
 
 	int childIndex = 0;
 
-	public override void Activate ()
+	public override void Activate (GameObject go)
 	{
-		base.Activate ();
+		base.Activate (go);
 		childIndex = 0;
 		if (childNodes.Count > 0) {
 			childIndex++;
-			childNodes[childIndex-1].Activate();
+			childNodes[childIndex-1].Activate(go);
 		}
 	}
 	
 
-	public override void ChildTerminated (BehaviourInterface child,bool result)
+	public override void ChildTerminated (GameObject go,BehaviourInterface child,bool result)
 	{
-		child.Deactivate ();
+		child.Deactivate (go);
 		if (childIndex >= childNodes.Count) {
 			if(!isRoot){
-				parentNode.ChildTerminated(this,false);
+				parentNode.ChildTerminated(go,this,false);
 			}else{
 				//Debug.Log(gameObject);
-				Deactivate();
+				Deactivate(go);
 			}
 			return;
 		}
 		
 		if (!result) {
-			childNodes [childIndex].Activate ();
+			childNodes [childIndex].Activate (go);
 			childIndex++;
 		} else {
 			if(!isRoot){
-				parentNode.ChildTerminated(this,true);
+				parentNode.ChildTerminated(go,this,true);
 			}else{
-				Deactivate();
+				Deactivate(go);
 			}
 		}
 		

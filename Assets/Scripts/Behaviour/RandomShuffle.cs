@@ -5,29 +5,29 @@ using System.Collections.Generic;
 public class RandomShuffle : BehaviourNode {
 	protected List<LeafNode> leftTotry;
 	
-	public override void Activate ()
+	public override void Activate (GameObject go)
 	{
-		base.Activate ();
+		base.Activate (go);
 		leftTotry = new List<LeafNode>(childNodes);
-		activateRandom ();
+		activateRandom (go);
 	}
 	
-	private void activateRandom(){
+	private void activateRandom(GameObject go){
 		int index = Random.Range (0, leftTotry.Count);
-		leftTotry [index].Activate ();
+		leftTotry [index].Activate (go);
 		leftTotry.RemoveAt (index);
 	}
 	
-	public override void ChildTerminated (BehaviourInterface child, bool result)
+	public override void ChildTerminated (GameObject go,BehaviourInterface child, bool result)
 	{
-		child.Deactivate ();
+		child.Deactivate (go);
 		if(!result){
-			parentNode.ChildTerminated(this,false);
+			parentNode.ChildTerminated(go,this,false);
 		}else{
 			if(leftTotry.Count > 0){
-				activateRandom();
+				activateRandom(go);
 			}else{
-				parentNode.ChildTerminated(this,true);
+				parentNode.ChildTerminated(go,this,true);
 			}
 		}
 	}

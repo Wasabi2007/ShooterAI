@@ -9,13 +9,13 @@ public abstract class Task : LeafNode , BehaviourInterface {
 	public bool IsActive {get{return isActive;} set{ isActive = value; }}
 	public ParentNode parentNode {get; set;}
 
-	public virtual void Activate (){
+	public virtual void Activate (GameObject go){
 		isActive = true;
 	}
-	public virtual void Deactivate (){
+	public virtual void Deactivate (GameObject go){
 		isActive = false;
 	}
-	public virtual void ChildTerminated (BehaviourInterface child,bool result){}
+	public virtual void ChildTerminated (GameObject go,BehaviourInterface child,bool result){}
 
 	public virtual void Update(float dt, GameObject go){
 	}
