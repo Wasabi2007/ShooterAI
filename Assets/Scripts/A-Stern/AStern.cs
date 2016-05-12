@@ -8,7 +8,7 @@ public class AStern : MonoBehaviour {
 
 	public LayerMask hit_mask;
 	public bool searchgrid = false;
-	private Node[] nodes;
+	private Node[] nodes = null;
 	private HashSet<Node> cover_nodes = new HashSet<Node>();
 
 	// Use this for initialization
@@ -24,12 +24,28 @@ public class AStern : MonoBehaviour {
 		}
 	}
 
-	Node get_nearest_cover_node(Vector2 position,Vector3 target_position){
+	public Node get_nearest_node(Vector2 position){
+		if(nodes == null)
+			find_connections ();
+		float current_min_dist = float.MaxValue;
+		Node current_min_node = null;
+		foreach (Node n in nodes) {
+			float dist = Vector3.Distance (position, n.transform.position);
+			if (dist < current_min_dist) {
+				current_min_dist = dist;
+				current_min_node = n;
+			}
+		}
+		return current_min_node;
+	}
+
+	public Node get_nearest_cover_node(Vector2 position,Vector3 target_position){
 		float current_min_dist = float.MaxValue;
 		Node current_min_node = null;
 		foreach (Node n in cover_nodes) {
 			Vector3 rel_pos = target_position - n.transform.position;
-			float angle = Mathf.Atan2(rel_pos.y,rel_pos.x);
+			float angle = Mathf.Atan2(rel_pos.y,rel_pos.x)*Mathf.Rad2Deg;
+			Debug.Log (angle);
 			if (!n.in_use && Mathf.Abs((float)n.duck_direction-angle)<45) { //Warning doesn't work with angles > 360 or negativ angles
 				float dist = Vector3.Distance (position, n.transform.position);
 				if (dist < current_min_dist) {
@@ -109,6 +125,7 @@ public class AStern : MonoBehaviour {
 			way.Add (prev);
 		}
 		way.Reverse ();
+
 		reset ();
 		return way;
 	}

@@ -49,11 +49,14 @@ public class Node : MonoBehaviour {
 	}
 
 	void OnDrawGizmos(){
-		Gizmos.DrawWireSphere(transform.position, 0.25f);
 		foreach (Node n in Connection) {
 			if (!n)
 				continue;
 			Gizmos.DrawLine (transform.position, n.transform.position);
 		}
+
+		if (in_use)
+			Gizmos.color = Color.green;
+		Gizmos.DrawWireSphere(transform.position, 0.25f);
 	}
 }
