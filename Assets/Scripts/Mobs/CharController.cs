@@ -103,6 +103,7 @@ public class CharController : MonoBehaviour {
 		if (walk_progress < 1.0f) {
 			walk_progress += (Time.deltaTime * speed)/length;
 			rigid.MovePosition(Vector3.Lerp(start_position,walk_target,Mathf.Clamp01(walk_progress)));
+			target (walk_target);
 		}
 
 	}
@@ -162,6 +163,9 @@ public class CharController : MonoBehaviour {
 	}
 
 	void OnDrawGizmos(){
+		Gizmos.color = Color.green;
+		Gizmos.DrawLine (transform.position, transform.position+move_direction);
+
 		Gizmos.color = Color.blue;
 
 		Gizmos.DrawLine (transform.position, walk_target);

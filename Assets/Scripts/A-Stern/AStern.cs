@@ -44,9 +44,13 @@ public class AStern : MonoBehaviour {
 		Node current_min_node = null;
 		foreach (Node n in cover_nodes) {
 			Vector3 rel_pos = target_position - n.transform.position;
+			rel_pos.Normalize ();
 			float angle = Mathf.Atan2(rel_pos.y,rel_pos.x)*Mathf.Rad2Deg;
-			Debug.Log (angle);
-			if (!n.in_use && Mathf.Abs((float)n.duck_direction-angle)<45) { //Warning doesn't work with angles > 360 or negativ angles
+			if (angle < 0) {
+				angle = 360 + angle;
+			}
+
+			if (!n.in_use && Mathf.Abs((int)n.duck_direction-angle)<45) { //Warning doesn't work with angles > 360 or negativ angles
 				float dist = Vector3.Distance (position, n.transform.position);
 				if (dist < current_min_dist) {
 					current_min_dist = dist;
@@ -71,8 +75,23 @@ public class AStern : MonoBehaviour {
 			}
 			for (int j = i+1; j < nodes.Length;++j) {
 				Node n2 = nodes [j];
-				RaycastHit2D hit = Physics2D.Raycast (n.transform.position, (n2.transform.position - n.transform.position).normalized,1000000,hit_mask);
-				if (!hit) {
+				Vector2 ray = (n2.transform.position - n.transform.position).normalized;
+				Vector3 normal = Vector3.zero;
+				normal.x = -ray.y;
+				normal.y = ray.x;
+
+				bool add_connection = true;
+
+				RaycastHit2D hit = Physics2D.Raycast (n.transform.position, ray,1000000,hit_mask);
+				add_connection &= !hit;
+
+				hit = Physics2D.Raycast (n.transform.position+normal*0.1f, ray,1000000,hit_mask);
+				add_connection &= !hit;
+
+				hit = Physics2D.Raycast (n.transform.position-normal*0.1f, ray,1000000,hit_mask);
+				add_connection &= !hit;
+
+				if (add_connection) {
 					n.add_node (n2);
 					n2.add_node (n);
 				}

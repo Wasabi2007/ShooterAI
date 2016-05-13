@@ -55,6 +55,10 @@ public class Node : MonoBehaviour {
 			Gizmos.DrawLine (transform.position, n.transform.position);
 		}
 
+		if (ducking_spot) {
+			Gizmos.color = Color.magenta;
+		}
+
 		if (in_use)
 			Gizmos.color = Color.green;
 		Gizmos.DrawWireSphere(transform.position, 0.25f);

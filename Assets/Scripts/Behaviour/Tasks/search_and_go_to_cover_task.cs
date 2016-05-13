@@ -21,15 +21,19 @@ public class search_and_go_to_cover_task:Task
 		GameObject player = GameObject.FindGameObjectWithTag ("Player");
 		Node end_node = cc.nav_path.get_nearest_cover_node (go.transform.position,player.transform.position);
 
-		if (cc.claimend_node != end_node) {
-			cc.claim_node (end_node);
-			cc.path.Clear ();
-			var path = cc.nav_path.get_path (start_node, end_node);
-			foreach(var n in path)
-				cc.path.Enqueue(n);
-		}
+		if (end_node != null) {
+			if (cc.claimend_node != end_node) {
+				cc.claim_node (end_node);
+				cc.path.Clear ();
+				var path = cc.nav_path.get_path (start_node, end_node);
+				foreach (var n in path)
+					cc.path.Enqueue (n);
+			}
 
-		cc.walktarget (cc.path.Peek().transform.position);
+			cc.walktarget (cc.path.Peek ().transform.position);
+			//cc.movedirection (cc.path.Peek ().transform.position - cc.transform.position);
+			//cc.target (cc.path.Peek ().transform.position);
+		}
 	}
 
 	public override void Update(float dt, GameObject go){
@@ -47,7 +51,11 @@ public class search_and_go_to_cover_task:Task
 
 		if (Vector3.Distance (go.transform.position, cc.path.Peek().transform.position) < 0.001) {
 			cc.path.Dequeue ();
-			cc.walktarget (cc.path.Peek().transform.position);
+			cc.walktarget (cc.path.Peek ().transform.position);
+
+			//cc.movedirection (cc.path.Peek().transform.position-cc.transform.position);
+			//cc.target (cc.path.Peek ().transform.position);
+
 		} 
 
 	}
