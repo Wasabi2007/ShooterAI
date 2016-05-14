@@ -10,7 +10,6 @@ public abstract class BehaviourNode : ParentNode,LeafNode {
 	public List<LeafNode> ChildNodes {get{return childNodes;} set{ childNodes = value; }}
 	public ParentNode parentNode { get; set;}
 
-
 	protected bool isRoot { get { return (parentNode == null || parentNode == this); } }
 
 	public virtual void Activate (GameObject go){
@@ -24,8 +23,9 @@ public abstract class BehaviourNode : ParentNode,LeafNode {
 	}
 	public abstract void ChildTerminated (GameObject go,BehaviourInterface child,bool result);
 
-	void AddChild (LeafNode child){
+	public void AddChild (LeafNode child){
 		ChildNodes.Add (child);
+		child.parentNode = this;
 	}
 
 	public virtual void Update(float dt, GameObject go){

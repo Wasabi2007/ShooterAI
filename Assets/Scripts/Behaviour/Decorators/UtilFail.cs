@@ -19,9 +19,13 @@ public class UtilFail : BehaviourNode {
 	{
 		ChildNodes [0].Deactivate (go);
 		if (result) {
-				ChildNodes [0].Activate (go);
+			ChildNodes [0].Activate (go);
 		} else {
-			parentNode.ChildTerminated(go,this,false);
+			if (parentNode != null) {
+				parentNode.ChildTerminated (go, this, false);
+			} else {
+				Deactivate (go);
+			}
 		}
 	}
 }

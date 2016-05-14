@@ -55,7 +55,10 @@ public class CharController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		root = new UtilFail ();
-		root.ChildNodes.Add (new search_and_go_to_cover_task ());
+		var selector = new Selector ();
+		var sgtask = new search_and_go_to_cover_task ();
+		selector.AddChild (sgtask);
+		root.AddChild (selector);
 		rigid = GetComponent<Rigidbody2D> ();
 		render = GetComponent<SpriteRenderer> ();
 		//rigid.constraints = RigidbodyConstraints2D.FreezeAll;
@@ -95,8 +98,11 @@ public class CharController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		current_state.update (this);
-		if(NPC)
+		if (NPC) {
+			if (!root.IsActive)
+				root.Activate (gameObject);
 			root.Update (0, gameObject);
+		}
 		
 		rigid.MovePosition (rigid.position+(Vector2)(move_direction*speed*Time.deltaTime));
 
@@ -120,8 +126,8 @@ public class CharController : MonoBehaviour {
 		return !hit;
 	}
 
-	public void movedirection(Vector3 dir){
-		move_direction = Vector3.Normalize(dir);
+	public void movedirection(Vector3 dir,float speed_mod = 1){
+		move_direction = Vector3.Normalize(dir)*speed_mod;
 	}
 		
 	public void target (Vector3 target_position){
