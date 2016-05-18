@@ -10,6 +10,7 @@ public abstract class Task : LeafNode , BehaviourInterface {
 	public ParentNode parentNode {get; set;}
 
 	public virtual void Activate (GameObject go){
+		//Debug.Log (this.GetType().Name);
 		isActive = true;
 	}
 	public virtual void Deactivate (GameObject go){

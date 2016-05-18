@@ -24,6 +24,7 @@ public class CharController : MonoBehaviour {
 	public bool NPC;
 	public bool npc_in_cover = false;//Debug
 	public AStern nav_path;
+	public float follow_range = 100;
 
 	[HideInInspector]
 	public Node claimend_node;
@@ -56,9 +57,26 @@ public class CharController : MonoBehaviour {
 	void Start () {
 		root = new UtilFail ();
 		var selector = new Selector ();
+		var sequence = new Sequence ();
 		var sgtask = new search_and_go_to_cover_task ();
+
+		var until_fail = new UtilFail ();
+
+		var isnearnode = new is_in_range (follow_range, "Player");
+		var iscoverdnode = new is_cover_blown_condition ("Player");
+		var cover = new cover_task ();
+
+		sequence.AddChild (isnearnode);
+		sequence.AddChild (iscoverdnode);
+		sequence.AddChild (cover);
+
+		until_fail.AddChild (sequence);
+
+		selector.AddChild (until_fail);
 		selector.AddChild (sgtask);
 		root.AddChild (selector);
+
+
 		rigid = GetComponent<Rigidbody2D> ();
 		render = GetComponent<SpriteRenderer> ();
 		//rigid.constraints = RigidbodyConstraints2D.FreezeAll;
@@ -117,6 +135,7 @@ public class CharController : MonoBehaviour {
 	public bool is_behind_cover (Vector3 target_position){
 		var rel_pos = (Vector2)target_position-rigid.position;
 		var hit = Physics2D.Raycast (rigid.position, rel_pos.normalized,float.MaxValue,CoverLayer);
+
 		return !hit;
 	}
 

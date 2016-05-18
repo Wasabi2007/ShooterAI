@@ -11,9 +11,6 @@ public class search_and_go_to_cover_task:Task
 	{
 		base.Activate (go);
 
-		Debug.Log ("search_and_go_to_cover_task Activ");
-
-
 		CharController cc = go.GetComponent<CharController>();
 		cc.claim_node (null);
 		cc.changestate (new NPCWalking ());
@@ -34,10 +31,7 @@ public class search_and_go_to_cover_task:Task
 			//cc.walktarget (cc.path.Peek ().transform.position);
 		}
 
-		if (cc.path.Count <= 0){
-			Debug.Log ("search_and_go_to_cover_task Terminate false");
-			parentNode.ChildTerminated (go,this, false);
-		}
+
 	}
 
 	public override void Update(float dt, GameObject go){
@@ -45,8 +39,14 @@ public class search_and_go_to_cover_task:Task
 
 		CharController cc = go.GetComponent<CharController>();
 
+		if (!cc.claimend_node && cc.path.Count <= 0){
+			//Debug.Log ("search_and_go_to_cover_task Terminate false");
+			parentNode.ChildTerminated (go,this, false);
+			return;
+		}
+
 		if (cc.claimend_node && cc.path.Count <= 0) {
-			Debug.Log ("search_and_go_to_cover_task Terminate true");
+			//Debug.Log ("search_and_go_to_cover_task Terminate true");
 			parentNode.ChildTerminated (go,this, true);
 			return;
 		}

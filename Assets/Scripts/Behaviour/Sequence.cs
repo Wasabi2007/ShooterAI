@@ -17,7 +17,9 @@ public class Sequence : BehaviourNode {
 
 	public override void ChildTerminated (GameObject go,BehaviourInterface child,bool result)
 	{
+
 		child.Deactivate (go);
+
 		if (childIndex >= childNodes.Count) {
 			if(!isRoot){
 				parentNode.ChildTerminated(go,this,true);
@@ -26,6 +28,7 @@ public class Sequence : BehaviourNode {
 			}
 			return;
 		}
+
 						
 		if (result) {
 				childNodes [childIndex].Activate (go);
@@ -37,6 +40,7 @@ public class Sequence : BehaviourNode {
 				Deactivate(go);
 			}
 		}
+
 
 	}
 }

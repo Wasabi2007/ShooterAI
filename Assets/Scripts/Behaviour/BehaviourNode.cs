@@ -14,6 +14,7 @@ public abstract class BehaviourNode : ParentNode,LeafNode {
 
 	public virtual void Activate (GameObject go){
 		isActive = true;
+		//Debug.Log (this.GetType().Name);
 	}
 	public virtual void Deactivate (GameObject go){
 		isActive = false;
@@ -29,8 +30,8 @@ public abstract class BehaviourNode : ParentNode,LeafNode {
 	}
 
 	public virtual void Update(float dt, GameObject go){
-		foreach (LeafNode child in ChildNodes)
-			if(child.IsActive)
-				child.Update (dt,go);
+		foreach (LeafNode child in ChildNodes) 
+			if (child.IsActive)
+				child.Update (dt, go);
 	}
 }
