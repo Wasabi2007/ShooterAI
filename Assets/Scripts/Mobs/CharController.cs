@@ -15,9 +15,16 @@ public class CharController : MonoBehaviour {
 	public SingleUnityLayer BulletLayer;
 	public LayerMask CoverLayer;
 
+
+	//todo move to WeaponComponent
 	public int Ammo;
 	public int AmmoMax;
 	public int Clips;
+	public float bullet_speed = 10;
+	public float bullet_firerate = 0.1f;
+	public float reload_speed = 1;
+	private float last_shoot;
+	private float reload_time;
 
 	public float speed;
 
@@ -188,13 +195,23 @@ public class CharController : MonoBehaviour {
 	}
 
 	public void shoot(){
-		GameObject go =	GameObject.Instantiate<GameObject> (bullet.gameObject);
-		go.layer = BulletLayer.LayerIndex;
-		go.transform.position = transform.position;
-		var bul = go.GetComponent<Bullet> ();
-		bul.damage = 10;
-		bul.speed = 10;
-		bul.dir = Quaternion.AngleAxis (rigid.rotation, Vector3.forward)*Vector2.right;
+		if (last_shoot + bullet_firerate < Time.time && Ammo > 0) {
+			last_shoot = Time.time;
+			GameObject go =	GameObject.Instantiate<GameObject> (bullet.gameObject);
+			go.layer = BulletLayer.LayerIndex;
+			go.transform.position = transform.position;
+			var bul = go.GetComponent<Bullet> ();
+			bul.damage = 10;
+			bul.speed = bullet_speed;
+			bul.dir = Quaternion.AngleAxis (rigid.rotation, Vector3.forward) * Vector2.right;
+			Ammo--;
+			if(Ammo == 0)
+				reload_time = Time.time + reload_speed;
+		}
+
+		if (Ammo == 0 && reload_time < Time.time) {
+			Ammo = AmmoMax;
+		}
 	}
 
 	public void applydamage(float damage){
