@@ -216,13 +216,20 @@ public class CharController : MonoBehaviour {
 
 	public void applydamage(float damage){
 		Health -= damage;
+		if (Health < 0) {
+			if(NPC)
+				GameObject.Destroy (gameObject);
+
+			rigid.constraints = RigidbodyConstraints2D.FreezeAll;
+			changestate(new PlayerDead());
+		}
 	}
 
 	public void applydirecteddamage(System.Object[] info){
 		float damage = (float)info [0];
 		Vector2 dir = ((Vector2)info [1])*-1;
 		if (!Physics2D.Raycast (rigid.position, dir, 1.0f, CoverLayer) || current_state.state != States.InCover) {
-			Health -= damage;
+			applydamage(damage);
 			GameObject.Destroy ((Object)info [2]);
 		}
 	}
