@@ -26,6 +26,16 @@ public class CharController : MonoBehaviour {
 	public AStern nav_path;
 	public float follow_range = 100;
 
+	private Vector3 danger_pos_;
+	public Vector3 danger_pos{
+		get{ return danger_pos_; }
+	}
+
+	private float danger_time_;
+	public float danger_time{
+		get{ return danger_time_; }
+	}
+
 	[HideInInspector]
 	public Node claimend_node;
 	[HideInInspector]
@@ -64,10 +74,23 @@ public class CharController : MonoBehaviour {
 
 		var isnearnode = new is_in_range (follow_range, "Player");
 		var iscoverdnode = new is_cover_blown_condition ("Player");
+		var until_fail2 = new UtilFail (true);
 		var cover = new cover_task ();
+
+		var sequence2 = new Sequence ();
+		var dangernode = new shoot_on_me_condition ();
+		var isnearnode2 = new is_in_range (follow_range, "Player");
+		var shoottargetnode = new shoot_on_target_task ("Player");
+
+		sequence2.AddChild (dangernode);
+		sequence2.AddChild (isnearnode2);
+		sequence2.AddChild (shoottargetnode);
+
+		until_fail2.AddChild (sequence2);
 
 		sequence.AddChild (isnearnode);
 		sequence.AddChild (iscoverdnode);
+		sequence.AddChild (until_fail2);
 		sequence.AddChild (cover);
 
 		until_fail.AddChild (sequence);
@@ -185,6 +208,11 @@ public class CharController : MonoBehaviour {
 			Health -= damage;
 			GameObject.Destroy ((Object)info [2]);
 		}
+	}
+
+	public void danger(Vector3 pos){
+		danger_pos_ = pos;
+		danger_time_ = Time.time;
 	}
 
 	void OnDrawGizmos(){

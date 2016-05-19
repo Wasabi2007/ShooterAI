@@ -23,11 +23,6 @@ public class search_and_go_to_cover_task:Task
 		var distance = Vector3.Distance(go.transform.position,player.transform.position);
 		var should_be_position = player.transform.position + direction_vector.normalized * Mathf.Min (cc.follow_range, distance)*0.8f;
 
-		Debug.DrawLine (should_be_position, should_be_position + Vector3.up, Color.red,10);
-		Debug.DrawLine (should_be_position, should_be_position - Vector3.up, Color.red,10);
-		Debug.DrawLine (should_be_position, should_be_position + Vector3.left, Color.red,10);
-		Debug.DrawLine (should_be_position, should_be_position - Vector3.left, Color.red,10);
-
 		Node end_node = cc.nav_path.get_nearest_cover_node (should_be_position,player.transform.position);
 
 		cc.path.Clear ();

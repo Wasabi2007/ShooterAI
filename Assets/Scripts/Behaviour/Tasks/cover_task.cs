@@ -11,6 +11,8 @@ public class cover_task : Task
 	{
 		var cc = go.GetComponent<CharController> ();
 
+		cc.movedirection (Vector3.zero);
+
 		if(!cc.isincover())
 			cc.changestate (new NPCInCover ());
 
