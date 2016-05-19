@@ -221,7 +221,7 @@ public class CharController : MonoBehaviour {
 	public void applydirecteddamage(System.Object[] info){
 		float damage = (float)info [0];
 		Vector2 dir = ((Vector2)info [1])*-1;
-		if (!Physics2D.Raycast (rigid.position, dir, float.MaxValue, CoverLayer) || current_state.state != States.InCover) {
+		if (!Physics2D.Raycast (rigid.position, dir, 1.0f, CoverLayer) || current_state.state != States.InCover) {
 			Health -= damage;
 			GameObject.Destroy ((Object)info [2]);
 		}
