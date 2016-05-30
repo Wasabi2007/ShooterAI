@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 public class search_and_go_to_cover_task:Task
 {
@@ -25,17 +26,20 @@ public class search_and_go_to_cover_task:Task
 
 		Node end_node = cc.nav_path.get_nearest_cover_node (should_be_position,player.transform.position);
 
-		cc.path.Clear ();
+		cc.Path.Clear ();
+		Queue<Node> path_ = new Queue<Node>();
 
 		if (end_node != null) {
 			cc.claim_node (end_node);
 			var path = cc.nav_path.get_path (start_node, end_node);
 			foreach (var n in path)
-				cc.path.Enqueue (n);
-
+				path_.Enqueue (n);
+			
 			//cc.walktarget (cc.path.Peek ().transform.position);
 		}
-
+		cc.Path = path_;
+		Debug.Log ("start_node: "+start_node);
+		Debug.Log ("end_node: "+end_node);
 
 	}
 
@@ -44,13 +48,13 @@ public class search_and_go_to_cover_task:Task
 
 		CharController cc = go.GetComponent<CharController>();
 
-		if (!cc.claimend_node && cc.path.Count <= 0){
+		if (!cc.claimend_node && cc.Path.Count <= 0){
 			//Debug.Log ("search_and_go_to_cover_task Terminate false");
 			parentNode.ChildTerminated (go,this, false);
 			return;
 		}
 
-		if (cc.claimend_node && cc.path.Count <= 0) {
+		if (cc.claimend_node && cc.Path.Count <= 0) {
 			//Debug.Log ("search_and_go_to_cover_task Terminate true");
 			parentNode.ChildTerminated (go,this, true);
 			return;
@@ -58,12 +62,12 @@ public class search_and_go_to_cover_task:Task
 
 
 
-		cc.movedirection (cc.path.Peek().transform.position-cc.transform.position);
-		cc.target (cc.path.Peek ().transform.position);
+		cc.movedirection (cc.Path.Peek().transform.position-cc.transform.position);
+		cc.target (cc.Path.Peek ().transform.position);
 
-		if (Vector3.Distance (go.transform.position, cc.path.Peek().transform.position) < cc.speed*Time.deltaTime) {
-			cc.movedirection (cc.path.Peek().transform.position-cc.transform.position,Vector3.Distance (go.transform.position, cc.path.Peek().transform.position));
-			cc.path.Dequeue ();
+		if (Vector3.Distance (go.transform.position, cc.Path.Peek().transform.position) < cc.speed*Time.deltaTime) {
+			cc.movedirection (cc.Path.Peek().transform.position-cc.transform.position,Vector3.Distance (go.transform.position, cc.Path.Peek().transform.position));
+			cc.Path.Dequeue ();
 			//cc.walktarget (cc.path.Peek ().transform.position);
 		} 
 

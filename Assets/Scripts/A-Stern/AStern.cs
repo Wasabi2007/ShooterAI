@@ -8,6 +8,7 @@ public class AStern : MonoBehaviour {
 
 	public LayerMask hit_mask;
 	public bool searchgrid = false;
+	public float raycast_thicknes = 0.2f;
 	private Node[] nodes = null;
 	private HashSet<Node> cover_nodes = new HashSet<Node>();
 
@@ -85,10 +86,10 @@ public class AStern : MonoBehaviour {
 				RaycastHit2D hit = Physics2D.Raycast (n.transform.position, ray,1000000,hit_mask);
 				add_connection &= !hit;
 
-				hit = Physics2D.Raycast (n.transform.position+normal*0.1f, ray,1000000,hit_mask);
+				hit = Physics2D.Raycast (n.transform.position+normal*raycast_thicknes, ray,1000000,hit_mask);
 				add_connection &= !hit;
 
-				hit = Physics2D.Raycast (n.transform.position-normal*0.1f, ray,1000000,hit_mask);
+				hit = Physics2D.Raycast (n.transform.position-normal*raycast_thicknes, ray,1000000,hit_mask);
 				add_connection &= !hit;
 
 				if (add_connection) {

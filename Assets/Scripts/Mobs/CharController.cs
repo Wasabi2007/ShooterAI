@@ -45,8 +45,14 @@ public class CharController : MonoBehaviour {
 
 	[HideInInspector]
 	public Node claimend_node;
-	[HideInInspector]
-	public Queue<Node> path = new Queue<Node>();
+
+	private Queue<Node> path = new Queue<Node>();
+	Node[] path_ = new Node[0];
+	public Queue<Node> Path{
+		set{ path = value;
+			 path_ = this.path.ToArray();}
+		get{ return path; }
+	}
 
 	private CharState current_state;
 
@@ -243,22 +249,16 @@ public class CharController : MonoBehaviour {
 		Gizmos.color = Color.green;
 		Gizmos.DrawLine (transform.position, transform.position+move_direction);
 
-		Gizmos.color = Color.blue;
-
-		Gizmos.DrawLine (transform.position, walk_target);
-
-		int count = this.path.Count;
-		Node[] path_ = new Node[count];
-		this.path.CopyTo (path_,0);
-
-		if (path_.Length <= 0)
-			return;
-
-
-		Node old_n = path_[0];
-		foreach (Node n in path_) {
-			Gizmos.DrawLine (old_n.transform.position, n.transform.position);
+		if (path_.Length > 0) {
+			Gizmos.color = Color.red;
+			Node old_n = path_ [0];
+			foreach (Node n in path_) {
+				Gizmos.DrawLine (old_n.transform.position, n.transform.position);
+			}
 		}
+
+		Gizmos.color = Color.blue;
+		Gizmos.DrawLine (transform.position, walk_target);
 
 	}
 }

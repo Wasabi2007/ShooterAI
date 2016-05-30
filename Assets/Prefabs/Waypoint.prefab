@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 117382}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.284, y: -2.543, z: 0}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 1}
+  m_LocalScale: {x: 0.25, y: 0.25, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -41,7 +41,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ducking_spot: 0
-  degree: 0
+  duck_direction: 0
+  cover_img: {fileID: 21300000, guid: 599a0152a8bba4bc8878e65a432091b9, type: 3}
+  normal_img: {fileID: 21300000, guid: 1bf1b7e060b0047a2bc62e1b20acd042, type: 3}
+  cover_cast:
+    serializedVersion: 2
+    m_Bits: 9216
+  cover_range: 0.5
+  in_use: 0
   Connection: []
   value: 0
   parrent: {fileID: 0}

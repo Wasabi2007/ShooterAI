@@ -18,10 +18,10 @@ TagManager:
   - 
   - PlayerBullet
   - Player
-  - Envoy
+  - Cover
   - Enemy
   - EnemyBullet
-  - 
+  - Envoy
   - 
   - 
   - 
