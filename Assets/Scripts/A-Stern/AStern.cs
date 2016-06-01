@@ -41,6 +41,8 @@ public class AStern : MonoBehaviour {
 	}
 
 	public Node get_nearest_cover_node(Vector2 position,Vector3 target_position){
+		if(cover_nodes.Count == 0)
+			find_connections ();
 		float current_min_dist = float.MaxValue;
 		Node current_min_node = null;
 		foreach (Node n in cover_nodes) {

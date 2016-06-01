@@ -7,6 +7,7 @@ TagManager:
   - Player
   - Enemy
   - Bullet
+  - WayPoinz
   layers:
   - Default
   - TransparentFX
