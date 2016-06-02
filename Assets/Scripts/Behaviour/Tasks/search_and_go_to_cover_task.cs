@@ -38,9 +38,6 @@ public class search_and_go_to_cover_task:Task
 			//cc.walktarget (cc.path.Peek ().transform.position);
 		}
 		cc.Path = path_;
-		Debug.Log ("start_node: "+start_node);
-		Debug.Log ("end_node: "+end_node);
-
 	}
 
 	public override void Update(float dt, GameObject go){

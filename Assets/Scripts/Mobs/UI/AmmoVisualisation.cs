@@ -17,22 +17,16 @@ public class AmmoVisualisation : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		Debug.Log ("Miep");
 		if (!char_controller || !ammo_sprite)
 			return;
 
 		RectTransform rt = GetComponent<RectTransform> ();
 
 		var zwich = (rt.rect.width / cols);
-		Debug.Log ("zwich"+zwich);
 		spritescaleing = zwich/ammo_sprite.rect.width;
-		rows = Mathf.FloorToInt (rt.rect.height/(ammo_sprite.rect.height*spritescaleing));
+		rows = Mathf.CeilToInt (rt.rect.height/(ammo_sprite.rect.height*spritescaleing));
+        if (rows * cols > char_controller.AmmoMax) rows--;
 
-		Debug.Log ("rt.rect "+rt.rect);
-		Debug.Log ("ammo_sprite.rect "+ammo_sprite.rect);
-		Debug.Log ("spritescaleing "+spritescaleing);
-		Debug.Log ("rows "+rows);
-		Debug.Log ("cols "+cols);
 		Transform[] allTransforms = gameObject.GetComponentsInChildren<Transform>();
 
 		foreach(Transform childObjects in allTransforms){
@@ -48,7 +42,7 @@ public class AmmoVisualisation : MonoBehaviour {
 				UnityEngine.UI.Image r = go.AddComponent<UnityEngine.UI.Image> ();
 				r.sprite = ammo_sprite;
 				go.transform.localScale = Vector3.one * spritescaleing;
-				go.transform.localPosition = new Vector2 (rt.rect.width - (x+1) * ammo_sprite.rect.width * spritescaleing, y * ammo_sprite.rect.height * spritescaleing);
+				go.transform.localPosition = new Vector2 ( - (x+1) * ammo_sprite.rect.width * spritescaleing, y * ammo_sprite.rect.height * spritescaleing);
 				ammos.Add (r);
 			}
 		}

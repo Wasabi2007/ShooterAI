@@ -20,7 +20,7 @@ public class Node : MonoBehaviour {
 	public Sprite cover_img;
 	public Sprite normal_img;
 
-	public static bool show_all_connections = true;
+	public static bool show_all_connections = false;
 	public static int show_percent_connections = 0;
 
 	public LayerMask cover_cast;

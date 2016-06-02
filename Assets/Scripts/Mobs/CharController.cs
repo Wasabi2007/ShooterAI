@@ -7,6 +7,23 @@ using System.Collections.Generic;
 [RequireComponent(typeof(SpriteRenderer))]
 public class CharController : MonoBehaviour {
 
+    //Debug
+    public bool god_mode;
+    public void set_godmode(bool value)
+    {
+        god_mode = value;
+    }
+
+    public bool show_path = false;
+    public void set_show_path(bool value)
+    {
+        show_path = value;
+    }
+
+    public string current_behavoiur()
+    {
+        return root.get_path();
+    }
 
 	public float Health = 100;
 	public float MaxHealth = 100;
@@ -221,6 +238,7 @@ public class CharController : MonoBehaviour {
 	}
 
 	public void applydamage(float damage){
+        if (god_mode) return;
 		Health -= damage;
 		if (Health < 0) {
 			if(NPC)
@@ -249,11 +267,13 @@ public class CharController : MonoBehaviour {
 		Gizmos.color = Color.green;
 		Gizmos.DrawLine (transform.position, transform.position+move_direction);
 
-		if (path_.Length > 0) {
+        if (path_.Length > 0 && show_path)
+        {
 			Gizmos.color = Color.red;
 			Node old_n = path_ [0];
 			foreach (Node n in path_) {
 				Gizmos.DrawLine (old_n.transform.position, n.transform.position);
+                old_n = n;
 			}
 		}
 

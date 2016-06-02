@@ -9,6 +9,12 @@ public abstract class Task : LeafNode , BehaviourInterface {
 	public bool IsActive {get{return isActive;} set{ isActive = value; }}
 	public ParentNode parentNode {get; set;}
 
+    public string get_path(string s = "")
+    {
+        s += this.GetType().Name;
+        return s;
+    }
+
 	public virtual void Activate (GameObject go){
 		//Debug.Log (this.GetType().Name);
 		isActive = true;

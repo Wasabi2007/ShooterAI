@@ -151,4 +151,14 @@ public class AStern : MonoBehaviour {
 		reset ();
 		return way;
 	}
+
+    public void show_all_lines(bool value)
+    {
+        Node.show_all_connections = value;
+    }
+
+    public void show_percent_lines(float value)
+    {
+        Node.show_percent_connections = Mathf.RoundToInt(value*100);
+    }
 }

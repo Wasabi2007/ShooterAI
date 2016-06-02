@@ -12,6 +12,15 @@ public abstract class BehaviourNode : ParentNode,LeafNode {
 
 	protected bool isRoot { get { return (parentNode == null || parentNode == this); } }
 
+    public string get_path(string s = "")
+    {
+        s += this.GetType().Name + " -> ";
+        foreach (LeafNode child in ChildNodes)
+           if (child.IsActive)
+               s = child.get_path(s);
+        return s;
+    }
+
 	public virtual void Activate (GameObject go){
 		isActive = true;
 		//Debug.Log (this.GetType().Name);
