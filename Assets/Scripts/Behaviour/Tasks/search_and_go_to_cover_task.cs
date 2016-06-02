@@ -4,8 +4,11 @@ using System.Collections.Generic;
 
 public class search_and_go_to_cover_task:Task
 {
-	public search_and_go_to_cover_task ()
+	float min_distance_factor;
+
+	public search_and_go_to_cover_task (float min_distance_factor = 0.8f)
 	{
+		this.min_distance_factor = min_distance_factor;
 	}
 
 	public override void Activate (GameObject go)
@@ -22,7 +25,7 @@ public class search_and_go_to_cover_task:Task
 
 		var direction_vector = go.transform.position - player.transform.position;
 		var distance = Vector3.Distance(go.transform.position,player.transform.position);
-		var should_be_position = player.transform.position + direction_vector.normalized * Mathf.Min (cc.follow_range, distance)*0.8f;
+		var should_be_position = player.transform.position + direction_vector.normalized * Mathf.Min (cc.follow_range, distance)*min_distance_factor;
 
 		Node end_node = cc.nav_path.get_nearest_cover_node (should_be_position,player.transform.position);
 

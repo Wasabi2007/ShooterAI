@@ -98,7 +98,7 @@ public class CharController : MonoBehaviour {
 		root = new UtilFail ();
 		var selector = new Selector ();
 		var sequence = new Sequence ();
-		var sgtask = new search_and_go_to_cover_task ();
+		var sgtask = new search_and_go_to_cover_task (0.6f);
 
 		var until_fail = new UtilFail ();
 
