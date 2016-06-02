@@ -28,7 +28,8 @@ public class DebugInput : MonoBehaviour {
     {
         if (npcs.Count <= 0) return;
 
-        npc_index = npc_index+1%npcs.Count;
+		npc_index = (npc_index+1)%npcs.Count;
+
         if (npcs[npc_index] == null)
         {
             npcs.RemoveAt(npc_index);
@@ -37,6 +38,7 @@ public class DebugInput : MonoBehaviour {
         else
         {
             Draw_Path.onValueChanged.RemoveAllListeners();
+			Draw_Path.isOn = npcs [npc_index].show_path;
             Draw_Path.onValueChanged.AddListener(npcs[npc_index].set_show_path);
         }
     }
@@ -46,7 +48,7 @@ public class DebugInput : MonoBehaviour {
         if (npcs.Count <= 0) return;
 
 
-        Name.text = npcs[npc_index].gameObject.name;
+		Name.text = npcs[npc_index].gameObject.name;
         Health.text = "Health: "+ npcs[npc_index].Health+"/"+npcs[npc_index].MaxHealth;
         Ammo.text = "Ammo: " + npcs[npc_index].Ammo + "/" + npcs[npc_index].AmmoMax;
         Behaviour.text = "Behaviour: " + npcs[npc_index].current_behavoiur();
