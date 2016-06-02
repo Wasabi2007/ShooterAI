@@ -85,13 +85,13 @@ public class AStern : MonoBehaviour {
 
 				bool add_connection = true;
 
-				RaycastHit2D hit = Physics2D.Raycast (n.transform.position, ray,1000000,hit_mask);
+                RaycastHit2D hit = Physics2D.Linecast(n.transform.position, n2.transform.position, hit_mask);//Physics2D.CircleCast(n.transform.position, raycast_thicknes, ray,).Raycast(n.transform.position, ray, 1000000, hit_mask);
 				add_connection &= !hit;
 
-				hit = Physics2D.Raycast (n.transform.position+normal*raycast_thicknes, ray,1000000,hit_mask);
+                hit = Physics2D.Linecast(n.transform.position + normal * raycast_thicknes, n2.transform.position + normal * raycast_thicknes, hit_mask); //Physics2D.Raycast(n.transform.position + normal * raycast_thicknes, ray, 1000000, hit_mask);
 				add_connection &= !hit;
 
-				hit = Physics2D.Raycast (n.transform.position-normal*raycast_thicknes, ray,1000000,hit_mask);
+                hit = Physics2D.Linecast(n.transform.position - normal * raycast_thicknes, n2.transform.position - normal * raycast_thicknes, hit_mask); //Physics2D.Raycast(n.transform.position - normal * raycast_thicknes, ray, 1000000, hit_mask);
 				add_connection &= !hit;
 
 				if (add_connection) {
