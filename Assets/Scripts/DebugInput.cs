@@ -45,7 +45,7 @@ public class DebugInput : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (npcs.Count <= 0) return;
+		if (npcs.Count <= 0 || npcs[npc_index] == null || npc_index > npcs.Count) return;
 
 
 		Name.text = npcs[npc_index].gameObject.name;

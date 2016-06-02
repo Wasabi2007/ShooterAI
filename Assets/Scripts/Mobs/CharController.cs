@@ -138,7 +138,6 @@ public class CharController : MonoBehaviour {
 				current_state = new NPCInCover ();
 			else
 				current_state = new NPCStanding();
-
 			root.Activate (gameObject);
 		} else {
 			current_state = new PlayerStanding ();
@@ -280,5 +279,9 @@ public class CharController : MonoBehaviour {
 		Gizmos.color = Color.blue;
 		Gizmos.DrawLine (transform.position, walk_target);
 
+	}
+
+	void OnDestroy(){
+		claim_node (null);
 	}
 }
