@@ -73,7 +73,7 @@ public class AStern : MonoBehaviour {
 
 		for (int i = 0; i < nodes.Length;++i) {
 			Node n = nodes [i];
-			if (n.ducking_spot) {
+			if (n.way_point_type_ == Node.way_point_type.cover) {
 				cover_nodes.Add (n);
 			}
 			for (int j = i+1; j < nodes.Length;++j) {

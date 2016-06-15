@@ -27,6 +27,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.284, y: -2.543, z: 0}
   m_LocalScale: {x: 0.25, y: 0.25, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -55,10 +56,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccf2555ce31704f94ab2eb78c262eadf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ducking_spot: 0
+  way_point_type_: 0
   duck_direction: 0
   cover_img: {fileID: 21300000, guid: 599a0152a8bba4bc8878e65a432091b9, type: 3}
   normal_img: {fileID: 21300000, guid: 1bf1b7e060b0047a2bc62e1b20acd042, type: 3}
+  ammo_img: {fileID: 21300000, guid: 95c0961138d2a4f93b11d1c9c0cf52d1, type: 3}
   cover_cast:
     serializedVersion: 2
     m_Bits: 9216
