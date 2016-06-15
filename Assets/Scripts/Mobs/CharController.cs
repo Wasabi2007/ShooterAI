@@ -236,6 +236,11 @@ public class CharController : MonoBehaviour {
 		}
 	}
 
+	public void addClips(int clips){
+		Clips += clips;
+	}
+
+
 	public void applydamage(float damage){
         if (god_mode) return;
 		Health -= damage;
