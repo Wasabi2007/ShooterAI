@@ -231,7 +231,7 @@ public class CharController : MonoBehaviour {
 				reload_time = Time.time + reload_speed;
 		}
 
-		if (Ammo == 0 && reload_time < Time.time) {
+		if (Ammo == 0 && Clips > 0 && reload_time < Time.time) {
 			Ammo = AmmoMax;
 		}
 	}
