@@ -18,6 +18,11 @@ public abstract class Task : LeafNode , BehaviourInterface {
 	public virtual void Activate (GameObject go){
 		//Debug.Log (this.GetType().Name);
 		isActive = true;
+		var r = (BehaviourNode)parentNode;
+		while (!r.isRoot) {
+			r = (BehaviourNode)r.parentNode;
+		}
+		Debug.Log (r.get_path());
 	}
 	public virtual void Deactivate (GameObject go){
 		isActive = false;

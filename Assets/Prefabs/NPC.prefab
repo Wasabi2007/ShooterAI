@@ -74,6 +74,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c78d13a851164049a7b1bdf1e6e31f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  god_mode: 0
+  show_path: 0
   Health: 100
   MaxHealth: 100
   bullet: {fileID: 11429464, guid: 79d3f9a6a45df4acb800e30312372ffa, type: 2}
@@ -81,7 +83,7 @@ MonoBehaviour:
     m_LayerIndex: 8
   CoverLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1024
   Ammo: 0
   AmmoMax: 0
   Clips: 0

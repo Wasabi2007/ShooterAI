@@ -10,7 +10,7 @@ public abstract class BehaviourNode : ParentNode,LeafNode {
 	public List<LeafNode> ChildNodes {get{return childNodes;} set{ childNodes = value; }}
 	public ParentNode parentNode { get; set;}
 
-	protected bool isRoot { get { return (parentNode == null || parentNode == this); } }
+	public bool isRoot { get { return (parentNode == null || parentNode == this); } }
 
     public string get_path(string s = "")
     {
@@ -23,7 +23,11 @@ public abstract class BehaviourNode : ParentNode,LeafNode {
 
 	public virtual void Activate (GameObject go){
 		isActive = true;
-		//Debug.Log (this.GetType().Name);
+		var r = this;
+		while (!r.isRoot) {
+			r = (BehaviourNode)r.parentNode;
+		}
+		Debug.Log (r.get_path());
 	}
 	public virtual void Deactivate (GameObject go){
 		isActive = false;

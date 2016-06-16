@@ -105,7 +105,7 @@ public class CharController : MonoBehaviour {
 		var find_ammo = new find_ammo_task ();
 
 
-		var until_fail = new UtilFail ();
+		var until_fail = new UtilFail (false);
 
 		var isnearnode = new is_in_range (follow_range, "Player");
 		var iscoverdnode = new is_cover_blown_condition ("Player");
@@ -181,6 +181,7 @@ public class CharController : MonoBehaviour {
 	void Update () {
 		current_state.update (this);
 		if (NPC) {
+			//Debug.Log (root.get_path ());
 			if (!root.IsActive)
 				root.Activate (gameObject);
 			root.Update (0, gameObject);
@@ -228,7 +229,7 @@ public class CharController : MonoBehaviour {
 		length = Vector2.Distance (walk_target,start_position);
 	}
 
-	public void shoot(){
+	public bool shoot(){
 		if (last_shoot + bullet_firerate < Time.time && Ammo > 0) {
 			last_shoot = Time.time;
 			GameObject go =	GameObject.Instantiate<GameObject> (bullet.gameObject);
@@ -247,6 +248,8 @@ public class CharController : MonoBehaviour {
 			Clips--;
 			Ammo = AmmoMax;
 		}
+
+		return Ammo > 0;
 	}
 
 	public void addClips(int clips){

@@ -22,7 +22,7 @@ public class Sequence : BehaviourNode {
 
 		if (childIndex >= childNodes.Count) {
 			if(!isRoot){
-				parentNode.ChildTerminated(go,this,true);
+				parentNode.ChildTerminated(go,this,result);
 			}else{
 				Deactivate(go);
 			}

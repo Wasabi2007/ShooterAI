@@ -22,9 +22,8 @@ public class shoot_on_target_task : Task
 
 		var target = GameObject.FindGameObjectWithTag (target_tag_);
 		cc.target (target.transform.position);
-		cc.shoot ();
 
-		parentNode.ChildTerminated (go, this, true);
+		parentNode.ChildTerminated (go, this, cc.shoot ());
 	}
 }
 
