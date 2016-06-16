@@ -26,4 +26,8 @@ public class ItemSpawner : MonoBehaviour {
 		}
 	
 	}
+
+	public bool has_item(){
+		return spawn != null;
+	}
 }

@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using Priority_Queue;
+using System;
+using System.Linq;
 
 [ExecuteInEditMode]
 public class AStern : MonoBehaviour {
@@ -10,7 +12,14 @@ public class AStern : MonoBehaviour {
 	public bool searchgrid = false;
 	public float raycast_thicknes = 0.2f;
 	private Node[] nodes = null;
-	private HashSet<Node> cover_nodes = new HashSet<Node>();
+
+	private Dictionary<Node.way_point_type, HashSet<Node>> node_type_lists = new Dictionary<Node.way_point_type, HashSet<Node>>();
+
+	public AStern(){
+		foreach(Node.way_point_type e in Enum.GetValues(typeof(Node.way_point_type)).Cast<Node.way_point_type>()){
+			node_type_lists.Add (e, new HashSet<Node> ());
+		}
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -25,12 +34,12 @@ public class AStern : MonoBehaviour {
 		}
 	}
 
-	public Node get_nearest_node(Vector2 position){
+	private Node get_nearest_node(Vector2 position,IEnumerable<Node> list){
 		if(nodes == null)
 			find_connections ();
 		float current_min_dist = float.MaxValue;
 		Node current_min_node = null;
-		foreach (Node n in nodes) {
+		foreach (Node n in list) {
 			float dist = Vector3.Distance (position, n.transform.position);
 			if (dist < current_min_dist) {
 				current_min_dist = dist;
@@ -40,12 +49,20 @@ public class AStern : MonoBehaviour {
 		return current_min_node;
 	}
 
+	public Node get_nearest_node(Vector2 position){
+		return get_nearest_node (position, nodes);
+	}
+
+	public Node get_nearest_ammo_node(Vector2 position){
+		return get_nearest_node (position, node_type_lists[Node.way_point_type.ammo]);
+	}
+
 	public Node get_nearest_cover_node(Vector2 position,Vector3 target_position){
-		if(cover_nodes.Count == 0)
+		if(node_type_lists[Node.way_point_type.cover].Count == 0)
 			find_connections ();
 		float current_min_dist = float.MaxValue;
 		Node current_min_node = null;
-		foreach (Node n in cover_nodes) {
+		foreach (Node n in node_type_lists[Node.way_point_type.cover]) {
 			Vector3 rel_pos = target_position - n.transform.position;
 			rel_pos.Normalize ();
 			float angle = Mathf.Atan2(rel_pos.y,rel_pos.x)*Mathf.Rad2Deg;
@@ -69,13 +86,13 @@ public class AStern : MonoBehaviour {
 		foreach (Node n in nodes) {
 			n.clear ();
 		}
-		cover_nodes.Clear ();
+		foreach (var list in node_type_lists.Values) {
+			list.Clear ();
+		}
 
 		for (int i = 0; i < nodes.Length;++i) {
 			Node n = nodes [i];
-			if (n.way_point_type_ == Node.way_point_type.cover) {
-				cover_nodes.Add (n);
-			}
+			node_type_lists [n.way_point_type_].Add (n);
 			for (int j = i+1; j < nodes.Length;++j) {
 				Node n2 = nodes [j];
 				Vector2 ray = (n2.transform.position - n.transform.position).normalized;

@@ -100,21 +100,29 @@ public class CharController : MonoBehaviour {
 		var sequence = new Sequence ();
 		var sgtask = new search_and_go_to_cover_task (0.6f);
 
+		var selector2 = new Selector ();
+		var enough_ammo3 = new has_ammo_condition (1);
+		var find_ammo = new find_ammo_task ();
+
+
 		var until_fail = new UtilFail ();
 
 		var isnearnode = new is_in_range (follow_range, "Player");
 		var iscoverdnode = new is_cover_blown_condition ("Player");
 		var until_fail2 = new UtilFail (true);
 		var cover = new cover_task ();
+		var enough_ammo2 = new has_ammo_condition (1);
 
 		var sequence2 = new Sequence ();
 		var dangernode = new shoot_on_me_condition ();
 		var isnearnode2 = new is_in_range (follow_range, "Player");
 		var shoottargetnode = new shoot_on_target_task ("Player");
+		var enough_ammo1 = new has_ammo_condition (1);
 
 		sequence2.AddChild (dangernode);
 		sequence2.AddChild (isnearnode2);
 		sequence2.AddChild (shoottargetnode);
+		sequence2.AddChild (enough_ammo1);
 
 		until_fail2.AddChild (sequence2);
 
@@ -122,17 +130,21 @@ public class CharController : MonoBehaviour {
 		sequence.AddChild (iscoverdnode);
 		sequence.AddChild (until_fail2);
 		sequence.AddChild (cover);
+		sequence.AddChild (enough_ammo2);
 
 		until_fail.AddChild (sequence);
 
+		selector2.AddChild (enough_ammo3);
+		selector2.AddChild (find_ammo);
+
 		selector.AddChild (until_fail);
+		selector.AddChild (selector2);
 		selector.AddChild (sgtask);
 		root.AddChild (selector);
 
 
 		rigid = GetComponent<Rigidbody2D> ();
 		render = GetComponent<SpriteRenderer> ();
-		//rigid.constraints = RigidbodyConstraints2D.FreezeAll;
 		if (NPC) {
 			if (npc_in_cover)
 				current_state = new NPCInCover ();
@@ -232,6 +244,7 @@ public class CharController : MonoBehaviour {
 		}
 
 		if (Ammo == 0 && Clips > 0 && reload_time < Time.time) {
+			Clips--;
 			Ammo = AmmoMax;
 		}
 	}
