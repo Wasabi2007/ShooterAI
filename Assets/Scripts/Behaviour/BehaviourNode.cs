@@ -27,7 +27,7 @@ public abstract class BehaviourNode : ParentNode,LeafNode {
 		while (!r.isRoot) {
 			r = (BehaviourNode)r.parentNode;
 		}
-		Debug.Log (r.get_path());
+		//Debug.Log (r.get_path());
 	}
 	public virtual void Deactivate (GameObject go){
 		isActive = false;

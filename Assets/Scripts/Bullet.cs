@@ -24,7 +24,7 @@ public class Bullet : MonoBehaviour {
 
 		var view_port_pos = Camera.main.WorldToViewportPoint (transform.position);
 		if (Mathf.Sign (view_port_pos.x) > 1 || Mathf.Sign (view_port_pos.y) > 1) {
-			
+			GameObject.Destroy (gameObject);
 		}
 	}
 

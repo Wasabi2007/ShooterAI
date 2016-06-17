@@ -15,6 +15,8 @@ public class find_ammo_task : Task
 		CharController cc = go.GetComponent<CharController>();
 		cc.claim_node (null);
 		cc.changestate (new NPCWalking ());
+		GameObject player = GameObject.FindGameObjectWithTag ("Player");
+
 
 		Node start_node = cc.nav_path.get_nearest_node (go.transform.position);
 
@@ -25,7 +27,7 @@ public class find_ammo_task : Task
 
 		if (end_node != null) {
 			cc.claim_node (end_node);
-			var path = cc.nav_path.get_path (start_node, end_node);
+			var path = cc.nav_path.get_path (start_node, end_node,player.transform.position,1000);
 			foreach (var n in path)
 				path_.Enqueue (n);
 

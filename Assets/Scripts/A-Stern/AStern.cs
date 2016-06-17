@@ -40,6 +40,7 @@ public class AStern : MonoBehaviour {
 		float current_min_dist = float.MaxValue;
 		Node current_min_node = null;
 		foreach (Node n in list) {
+			if (n.in_use) continue;
 			float dist = Vector3.Distance (position, n.transform.position);
 			if (dist < current_min_dist) {
 				current_min_dist = dist;
@@ -125,8 +126,10 @@ public class AStern : MonoBehaviour {
 			n.parrent = null;
 		}
 	}
-
 	public List<Node> get_path(Node start,Node end){
+		return get_path (start,end,new Vector3(0,0,0),0);
+	}
+	public List<Node> get_path(Node start,Node end, Vector3 target ,int visibility_cost = 0){
 		
 		SimplePriorityQueue<Node> openlist = new SimplePriorityQueue<Node> ();
 		List<Node> closedlist = new List<Node>();
@@ -143,8 +146,9 @@ public class AStern : MonoBehaviour {
 			closedlist.Add (current_node);
 
 			foreach (Node n in current_node.Connection) {
+				if (n.in_use && n != end) closedlist.Add (n);
 				if( closedlist.Contains(n))continue;
-				int tentative_g = current_node.value + Mathf.RoundToInt(Vector3.Distance(current_node.transform.position, n.transform.position));
+				int tentative_g = current_node.value + Mathf.RoundToInt(Vector3.Distance(current_node.transform.position, n.transform.position)) + (Physics2D.Linecast(n.transform.position,target,hit_mask.value)?0:visibility_cost);
 
 				if(openlist.Contains(n) && tentative_g >= n.value)continue;
 
