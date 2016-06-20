@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(SpriteRenderer))]
@@ -23,7 +24,7 @@ public class Bullet : MonoBehaviour {
 		rigid.MovePosition (rigid.position + dir * speed * Time.deltaTime);
 
 		var view_port_pos = Camera.main.WorldToViewportPoint (transform.position);
-		if (Mathf.Sign (view_port_pos.x) > 1 || Mathf.Sign (view_port_pos.y) > 1) {
+		if (Mathf.Abs(view_port_pos.x) > 1 || Mathf.Abs (view_port_pos.y) > 1) {
 			GameObject.Destroy (gameObject);
 		}
 	}
