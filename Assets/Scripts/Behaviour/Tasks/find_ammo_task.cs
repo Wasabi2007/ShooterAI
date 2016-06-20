@@ -42,13 +42,13 @@ public class find_ammo_task : Task
 		CharController cc = go.GetComponent<CharController>();
 
 		if (!cc.claimend_node && cc.Path.Count <= 0){
-			//Debug.Log ("search_and_go_to_cover_task Terminate false");
+			Debug.Log ("find_ammo_task Terminate false");
 			parentNode.ChildTerminated (go,this, false);
 			return;
 		}
 
 		if (cc.claimend_node && cc.Path.Count <= 0) {
-			//Debug.Log ("search_and_go_to_cover_task Terminate true");
+			Debug.Log ("find_ammo_task Terminate true");
 			parentNode.ChildTerminated (go,this, true);
 			return;
 		}
