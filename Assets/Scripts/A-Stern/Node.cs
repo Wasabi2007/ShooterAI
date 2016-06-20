@@ -17,11 +17,12 @@ public class Node : MonoBehaviour {
 	public enum way_point_type{
 		normal,
 		cover,
+		fullcover,
 		ammo
 	}
 
 	public way_point_type way_point_type_;
-	public direction duck_direction;
+	public List<direction> duck_direction = new List<direction>();
 
 	public Sprite cover_img;
 	public Sprite normal_img;
@@ -52,33 +53,35 @@ public class Node : MonoBehaviour {
 			var hit = Physics2D.Raycast (transform.position, Vector2.down, cover_range, cover_cast.value);
 			if (hit) {
 				way_point_type_ = way_point_type.cover;
-				duck_direction = Node.direction.SOUTH;
+				duck_direction.Add(Node.direction.SOUTH);
 			}
 
 			hit = Physics2D.Raycast (transform.position, Vector2.up, cover_range, cover_cast.value);
 			if (hit) {
 				way_point_type_ = way_point_type.cover;
-				duck_direction = Node.direction.NOTRH;
+				duck_direction.Add(Node.direction.NOTRH);
 			}
 
 			hit = Physics2D.Raycast (transform.position, Vector2.left, cover_range, cover_cast.value);
 			if (hit) {
 				way_point_type_ = way_point_type.cover;
-				duck_direction = Node.direction.WEST;
+				duck_direction.Add(Node.direction.WEST);
 			}
 
 			hit = Physics2D.Raycast (transform.position, Vector2.right, cover_range, cover_cast.value);
 			if (hit) {
 				way_point_type_ = way_point_type.cover;
-				duck_direction = Node.direction.EAST;
+				duck_direction.Add(Node.direction.EAST);
 			}
 		}
 	}
 
 	// Update is called once per frame
 	void Update () {
-		transform.localRotation = Quaternion.AngleAxis ((float)duck_direction,Vector3.forward);
-		duck_direction = duck_direction;
+		if (duck_direction.Count > 0) {
+			transform.localRotation = Quaternion.AngleAxis ((float)duck_direction [0], Vector3.forward);
+			duck_direction = duck_direction;
+		}
 	}
 
 	public void clear(){

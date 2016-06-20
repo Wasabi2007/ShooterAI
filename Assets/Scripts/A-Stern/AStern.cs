@@ -71,11 +71,15 @@ public class AStern : MonoBehaviour {
 				angle = 360 + angle;
 			}
 
-			if (!n.in_use && Mathf.Abs((int)n.duck_direction-angle)<45) { //Warning doesn't work with angles > 360 or negativ angles
-				float dist = Vector3.Distance (position, n.transform.position); // maybe replace with a better Distance function? one that takes the path into account
-				if (dist < current_min_dist) {
-					current_min_dist = dist;
-					current_min_node = n;
+			if (!n.in_use)  { //Warning doesn't work with angles > 360 or negativ angles
+				foreach (var dir in n.duck_direction) {
+					if (Mathf.Abs ((int)dir - angle) > 45)
+						continue;
+					float dist = Vector3.Distance (position, n.transform.position); // maybe replace with a better Distance function? one that takes the path into account
+					if (dist < current_min_dist) {
+						current_min_dist = dist;
+						current_min_node = n;
+					}
 				}
 			}
 		}
