@@ -41,19 +41,10 @@ public class find_ammo_task : Task
 
 		CharController cc = go.GetComponent<CharController>();
 
-		if (!cc.claimend_node && cc.Path.Count <= 0){
-			Debug.Log ("find_ammo_task Terminate false");
-			parentNode.ChildTerminated (go,this, false);
-			return;
-		}
-
-		if (cc.claimend_node && cc.Path.Count <= 0) {
-			Debug.Log ("find_ammo_task Terminate true");
+		if (cc.Path.Count <= 0){
 			parentNode.ChildTerminated (go,this, true);
 			return;
 		}
-
-
 
 		cc.movedirection (cc.Path.Peek().transform.position-cc.transform.position);
 		cc.target (cc.Path.Peek ().transform.position);

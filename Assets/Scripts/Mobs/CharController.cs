@@ -100,6 +100,7 @@ public class CharController : MonoBehaviour {
 		var sequence = new Sequence ();
 		var sgtask = new search_and_go_to_cover_task (0.6f);
 
+		var sequence3 = new Sequence ();
 		var selector2 = new Selector ();
 		var enough_ammo3 = new has_ammo_condition (1);
 		var find_ammo = new find_ammo_task ();
@@ -137,9 +138,12 @@ public class CharController : MonoBehaviour {
 		selector2.AddChild (enough_ammo3);
 		selector2.AddChild (find_ammo);
 
+
+		sequence3.AddChild (selector2);
+		sequence3.AddChild (sgtask);
+
 		selector.AddChild (until_fail);
-		selector.AddChild (selector2);
-		selector.AddChild (sgtask);
+		selector.AddChild (sequence3);
 		root.AddChild (selector);
 
 
