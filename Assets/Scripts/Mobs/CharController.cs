@@ -182,7 +182,7 @@ public class CharController : MonoBehaviour {
 	} 
 	
 	// Update is called once per frame
-	void Update () {
+	void LateUpdate () {
 		current_state.update (this);
 		if (NPC) {
 			//Debug.Log (root.get_path ());

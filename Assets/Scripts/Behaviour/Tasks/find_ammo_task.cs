@@ -27,7 +27,7 @@ public class find_ammo_task : Task
 
 		if (end_node != null) {
 			cc.claim_node (end_node);
-			var path = cc.nav_path.get_path (start_node, end_node,player.transform.position,1000);
+			var path = cc.nav_path.get_path (start_node, end_node,player.transform.position,10);
 			foreach (var n in path)
 				path_.Enqueue (n);
 

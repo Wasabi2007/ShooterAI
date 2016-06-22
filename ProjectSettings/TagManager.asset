@@ -8,6 +8,8 @@ TagManager:
   - Enemy
   - Bullet
   - WayPoinz
+  - Cover
+  - Envoy
   layers:
   - Default
   - TransparentFX

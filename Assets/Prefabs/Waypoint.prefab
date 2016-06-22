@@ -57,14 +57,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   way_point_type_: 0
-  duck_direction: 0
+  cover_direction: 
+  full_cover_direction: 
   cover_img: {fileID: 21300000, guid: 599a0152a8bba4bc8878e65a432091b9, type: 3}
   normal_img: {fileID: 21300000, guid: 1bf1b7e060b0047a2bc62e1b20acd042, type: 3}
   ammo_img: {fileID: 21300000, guid: 95c0961138d2a4f93b11d1c9c0cf52d1, type: 3}
   cover_cast:
     serializedVersion: 2
-    m_Bits: 9216
+    m_Bits: 1024
   cover_range: 0.5
+  full_cover_cast:
+    serializedVersion: 2
+    m_Bits: 8192
+  base_value: 100000
+  real_value: 0
   in_use: 0
   Connection: []
   value: 0

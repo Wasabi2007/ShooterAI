@@ -9,8 +9,10 @@ using System.Linq;
 public class AStern : MonoBehaviour {
 
 	public LayerMask hit_mask;
+	public LayerMask obscured_hit_mask;
 	public bool searchgrid = false;
 	public float raycast_thicknes = 0.2f;
+	public float max_conection_distance = 3.0f;
 	private Node[] nodes = null;
 
 	private Dictionary<Node.way_point_type, HashSet<Node>> node_type_lists = new Dictionary<Node.way_point_type, HashSet<Node>>();
@@ -54,6 +56,10 @@ public class AStern : MonoBehaviour {
 		return get_nearest_node (position, nodes);
 	}
 
+	public Node get_nearest_full_cover_node(Vector2 position){
+		return get_nearest_node (position, node_type_lists[Node.way_point_type.fullcover]);
+	}
+
 	public Node get_nearest_ammo_node(Vector2 position){
 		return get_nearest_node (position, node_type_lists[Node.way_point_type.ammo]);
 	}
@@ -64,6 +70,9 @@ public class AStern : MonoBehaviour {
 		float current_min_dist = float.MaxValue;
 		Node current_min_node = null;
 		foreach (Node n in node_type_lists[Node.way_point_type.cover]) {
+			RaycastHit2D hit = Physics2D.Linecast(n.transform.position, target_position, obscured_hit_mask);
+			if (hit)
+				continue;
 			Vector3 rel_pos = target_position - n.transform.position;
 			rel_pos.Normalize ();
 			float angle = Mathf.Atan2(rel_pos.y,rel_pos.x)*Mathf.Rad2Deg;
@@ -72,7 +81,31 @@ public class AStern : MonoBehaviour {
 			}
 
 			if (!n.in_use)  { //Warning doesn't work with angles > 360 or negativ angles
-				foreach (var dir in n.duck_direction) {
+				foreach (var dir in n.cover_direction) {
+					if (Mathf.Abs ((int)dir - angle) > 45)
+						continue;
+					float dist = Vector3.Distance (position, n.transform.position); // maybe replace with a better Distance function? one that takes the path into account
+					if (dist < current_min_dist) {
+						current_min_dist = dist;
+						current_min_node = n;
+					}
+				}
+			}
+		}
+		foreach (Node n in node_type_lists[Node.way_point_type.cover_fullcover]) {
+			RaycastHit2D hit = Physics2D.Linecast(n.transform.position, target_position, obscured_hit_mask);
+			if (hit)
+				continue;
+			
+			Vector3 rel_pos = target_position - n.transform.position;
+			rel_pos.Normalize ();
+			float angle = Mathf.Atan2(rel_pos.y,rel_pos.x)*Mathf.Rad2Deg;
+			if (angle < 0) {
+				angle = 360 + angle;
+			}
+
+			if (!n.in_use)  { //Warning doesn't work with angles > 360 or negativ angles
+				foreach (var dir in n.cover_direction) {
 					if (Mathf.Abs ((int)dir - angle) > 45)
 						continue;
 					float dist = Vector3.Distance (position, n.transform.position); // maybe replace with a better Distance function? one that takes the path into account
@@ -100,6 +133,8 @@ public class AStern : MonoBehaviour {
 			node_type_lists [n.way_point_type_].Add (n);
 			for (int j = i+1; j < nodes.Length;++j) {
 				Node n2 = nodes [j];
+				if (Vector3.Distance (n.transform.position, n2.transform.position) > max_conection_distance)
+					continue;
 				Vector2 ray = (n2.transform.position - n.transform.position).normalized;
 				Vector3 normal = Vector3.zero;
 				normal.x = -ray.y;
@@ -133,13 +168,15 @@ public class AStern : MonoBehaviour {
 	public List<Node> get_path(Node start,Node end){
 		return get_path (start,end,new Vector3(0,0,0),0);
 	}
-	public List<Node> get_path(Node start,Node end, Vector3 target ,int visibility_cost = 0){
+	public List<Node> get_path(Node start,Node end, Vector3 target ,int visibility_cost = 0 ,float visibility_cost_distance = 10){
 		
 		SimplePriorityQueue<Node> openlist = new SimplePriorityQueue<Node> ();
 		List<Node> closedlist = new List<Node>();
 
 		start.value = 0;
 		openlist.Enqueue (start, 0);
+
+		Dictionary<Node,int> visibility_cost_map = new Dictionary<Node, int> ();
 
 		while (openlist.Count > 0) {
 			Node current_node = openlist.Dequeue ();
@@ -152,7 +189,16 @@ public class AStern : MonoBehaviour {
 			foreach (Node n in current_node.Connection) {
 				if (n.in_use && n != end) closedlist.Add (n);
 				if( closedlist.Contains(n))continue;
-				int tentative_g = current_node.value + Mathf.RoundToInt(Vector3.Distance(current_node.transform.position, n.transform.position)) + (Physics2D.Linecast(n.transform.position,target,hit_mask.value)?0:visibility_cost);
+				if (!visibility_cost_map.ContainsKey (n)) {
+					int add_cost = 0;
+					if (Physics2D.Linecast(n.transform.position,target,hit_mask.value|obscured_hit_mask.value)) {
+						add_cost += visibility_cost;
+					}
+
+					visibility_cost_map.Add (n, add_cost);
+				}
+					
+				int tentative_g = current_node.value + current_node.real_value + visibility_cost_map[n] + Mathf.RoundToInt(Vector3.Distance(current_node.transform.position, n.transform.position)) ;
 
 				if(openlist.Contains(n) && tentative_g >= n.value)continue;
 

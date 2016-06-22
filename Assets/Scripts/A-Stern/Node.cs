@@ -18,11 +18,13 @@ public class Node : MonoBehaviour {
 		normal,
 		cover,
 		fullcover,
+		cover_fullcover,
 		ammo
 	}
 
 	public way_point_type way_point_type_;
-	public List<direction> duck_direction = new List<direction>();
+	public List<direction> cover_direction = new List<direction>();
+	public List<direction> full_cover_direction = new List<direction>();
 
 	public Sprite cover_img;
 	public Sprite normal_img;
@@ -33,6 +35,12 @@ public class Node : MonoBehaviour {
 
 	public LayerMask cover_cast;
 	public float cover_range;
+	public LayerMask full_cover_cast;
+
+	public int base_value = 100000;
+	[HideInInspector]
+	public int real_value = 0;
+
 
 	[HideInInspector]
 	public bool in_use;
@@ -46,41 +54,86 @@ public class Node : MonoBehaviour {
 	[HideInInspector]
 	public Node parrent = null;
 
+	private int cover_value = 10;
+	private int full_cover_value = 100;
+
 	// Use this for initialization
 	void Start () {
+		//GameObject.DestroyImmediate (GetComponent<CircleCollider2D> ());
+
+		real_value = base_value;
 		//ist it a usable cover
 		if (way_point_type_ == way_point_type.normal) {
 			var hit = Physics2D.Raycast (transform.position, Vector2.down, cover_range, cover_cast.value);
 			if (hit) {
 				way_point_type_ = way_point_type.cover;
-				duck_direction.Add(Node.direction.SOUTH);
+				cover_direction.Add(Node.direction.SOUTH);
+				real_value -= cover_value;
 			}
 
 			hit = Physics2D.Raycast (transform.position, Vector2.up, cover_range, cover_cast.value);
 			if (hit) {
 				way_point_type_ = way_point_type.cover;
-				duck_direction.Add(Node.direction.NOTRH);
+				cover_direction.Add(Node.direction.NOTRH);
+				real_value -= cover_value;
 			}
 
 			hit = Physics2D.Raycast (transform.position, Vector2.left, cover_range, cover_cast.value);
 			if (hit) {
 				way_point_type_ = way_point_type.cover;
-				duck_direction.Add(Node.direction.WEST);
+				cover_direction.Add(Node.direction.WEST);
+				real_value -= cover_value;
 			}
 
 			hit = Physics2D.Raycast (transform.position, Vector2.right, cover_range, cover_cast.value);
 			if (hit) {
 				way_point_type_ = way_point_type.cover;
-				duck_direction.Add(Node.direction.EAST);
+				cover_direction.Add(Node.direction.EAST);
+				real_value -= cover_value;
+			}
+
+
+
+			hit = Physics2D.Raycast (transform.position, Vector2.down, cover_range, full_cover_cast.value);
+			if (hit) {
+				way_point_type_ = (way_point_type_ == way_point_type.cover|| way_point_type_ ==  way_point_type.cover_fullcover?way_point_type.cover_fullcover:way_point_type.fullcover);
+				full_cover_direction.Add(Node.direction.SOUTH);
+				real_value -= full_cover_value;
+			
+
+			}
+
+			hit = Physics2D.Raycast (transform.position, Vector2.up, cover_range, full_cover_cast.value);
+			if (hit) {
+				way_point_type_ = (way_point_type_ == way_point_type.cover|| way_point_type_ ==  way_point_type.cover_fullcover?way_point_type.cover_fullcover:way_point_type.fullcover);
+				full_cover_direction.Add(Node.direction.NOTRH);
+				real_value -= full_cover_value;
+
+			}
+
+			hit = Physics2D.Raycast (transform.position, Vector2.left, cover_range, full_cover_cast.value);
+			if (hit) {
+				way_point_type_ = (way_point_type_ == way_point_type.cover|| way_point_type_ ==  way_point_type.cover_fullcover?way_point_type.cover_fullcover:way_point_type.fullcover);
+				full_cover_direction.Add(Node.direction.WEST);
+				real_value -= full_cover_value;
+
+			}
+
+			hit = Physics2D.Raycast (transform.position, Vector2.right, cover_range, full_cover_cast.value);
+			if (hit) {
+				way_point_type_ = (way_point_type_ == way_point_type.cover|| way_point_type_ ==  way_point_type.cover_fullcover?way_point_type.cover_fullcover:way_point_type.fullcover);
+				full_cover_direction.Add(Node.direction.EAST);
+				real_value -= full_cover_value;
+
 			}
 		}
 	}
 
 	// Update is called once per frame
 	void Update () {
-		if (duck_direction.Count > 0) {
-			transform.localRotation = Quaternion.AngleAxis ((float)duck_direction [0], Vector3.forward);
-			duck_direction = duck_direction;
+		if (cover_direction.Count > 0) {
+			transform.localRotation = Quaternion.AngleAxis ((float)cover_direction [0], Vector3.forward);
+			cover_direction = cover_direction;
 		}
 	}
 
@@ -110,6 +163,8 @@ public class Node : MonoBehaviour {
 		switch (way_point_type_) {
 		case way_point_type.normal:{sr.sprite = normal_img;}break;
 		case way_point_type.cover:{sr.sprite = cover_img;Gizmos.color = Color.magenta;}break;
+		case way_point_type.fullcover:{sr.sprite = cover_img;Gizmos.color = Color.yellow;}break;
+		case way_point_type.cover_fullcover:{sr.sprite = cover_img;Gizmos.color = Color.cyan;}break;
 		case way_point_type.ammo:{sr.sprite = ammo_img;}break;
 		}
 
