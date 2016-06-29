@@ -134,7 +134,7 @@ public class CharController : MonoBehaviour {
 					until_fail.AddChild (sequence);
 
 				}
-
+				selector.AddChild (until_fail);
 			}
 			{
 				var sequence1 = new Sequence ();
@@ -150,6 +150,8 @@ public class CharController : MonoBehaviour {
 								var next_waypoint = new go_to_next_waypoint_task ();
 								until_fail2.AddChild (next_waypoint);
 							}
+							sequence2.AddChild (find_ammo);
+							sequence2.AddChild (until_fail2);
 
 						}
 						selector2.AddChild (enough_ammo3);

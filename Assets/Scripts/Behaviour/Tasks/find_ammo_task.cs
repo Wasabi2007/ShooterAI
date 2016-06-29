@@ -12,6 +12,7 @@ public class find_ammo_task : Task
 	{
 		base.Activate (go);
 
+		Debug.Log ("Find ammo?");
 	}
 
 	public override void Update(float dt, GameObject go){
