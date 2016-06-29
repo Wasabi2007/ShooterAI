@@ -19,7 +19,6 @@ public class find_ammo_task : Task
 
 		CharController cc = go.GetComponent<CharController>();
 		cc.claim_node (null);
-		cc.changestate (new NPCWalking ());
 		GameObject player = GameObject.FindGameObjectWithTag ("Player");
 
 
@@ -39,6 +38,15 @@ public class find_ammo_task : Task
 			//cc.walktarget (cc.path.Peek ().transform.position);
 		}
 		cc.Path = path_;
+
+
+		if (!end_node){
+			//Debug.Log ("search_and_go_to_cover_task Terminate false");
+			parentNode.ChildTerminated (go,this, false);
+		}else {
+			//Debug.Log ("search_and_go_to_cover_task Terminate true");
+			parentNode.ChildTerminated (go,this, true);
+		}
 
 	}
 }

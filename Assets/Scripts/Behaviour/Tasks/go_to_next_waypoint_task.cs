@@ -16,17 +16,6 @@ public class go_to_next_waypoint_task:Task
 		else if(cc.currentstate() == States.Walking)
 			cc.target (cc.Path.Peek ().transform.position);
 
-		if (cc.Path.Count >= 0){
-			parentNode.ChildTerminated (go,this, true);
-		}
-
-		if (cc.Path.Count <= 0) {
-			parentNode.ChildTerminated (go,this, false);
-			return;
-		}
-
-
-
 		cc.movedirection (cc.Path.Peek().transform.position-cc.transform.position);
 		//cc.target (cc.Path.Peek ().transform.position);
 
@@ -36,6 +25,12 @@ public class go_to_next_waypoint_task:Task
 			cc.Path.Dequeue ();
 			//cc.walktarget (cc.path.Peek ().transform.position);
 		} 
+			
+		if (cc.Path.Count > 0){
+			parentNode.ChildTerminated (go,this, true);
+		} else {
+			parentNode.ChildTerminated (go,this, false);
+		}
 
 	}
 }

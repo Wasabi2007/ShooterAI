@@ -16,7 +16,7 @@ public class shoot_on_target_task : Task
 		base.Update (dt, go);
 
 		var cc = go.GetComponent<CharController> ();
-		cc.movedirection (Vector3.zero);
+		//cc.movedirection (Vector3.zero);
 
 		cc.changestate (new NPCShooting ());
 
