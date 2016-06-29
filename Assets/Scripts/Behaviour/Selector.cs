@@ -21,9 +21,8 @@ public class Selector : BehaviourNode {
 		child.Deactivate (go);
 		if (childIndex >= childNodes.Count) {
 			if(!isRoot){
-				parentNode.ChildTerminated(go,this,false);
+				parentNode.ChildTerminated(go,this,result);
 			}else{
-				//Debug.Log(gameObject);
 				Deactivate(go);
 			}
 			return;

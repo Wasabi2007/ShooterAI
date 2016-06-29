@@ -69,7 +69,7 @@ MonoBehaviour:
   full_cover_cast:
     serializedVersion: 2
     m_Bits: 8192
-  base_value: 100000
+  base_value: 1000
   real_value: 0
   in_use: 0
   Connection: []

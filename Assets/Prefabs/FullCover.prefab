@@ -10,6 +10,7 @@ GameObject:
   - 4: {fileID: 468010}
   - 212: {fileID: 21283982}
   - 61: {fileID: 6188256}
+  - 114: {fileID: 11429218}
   m_Layer: 10
   m_Name: FullCover
   m_TagString: Envoy
@@ -44,6 +45,23 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Size: {x: 0.7, y: 0.7}
+--- !u!114 &11429218
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 111452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 265cbd67af36342a3b195c8e7c712306, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  x_grid_size: 1
+  y_grid_size: 1
+  node_prefab: {fileID: 11480344, guid: d54e5964f91674670a9746a349b52d5b, type: 2}
+  castLayer:
+    serializedVersion: 2
+    m_Bits: 2147492865
 --- !u!212 &21283982
 SpriteRenderer:
   m_ObjectHideFlags: 1

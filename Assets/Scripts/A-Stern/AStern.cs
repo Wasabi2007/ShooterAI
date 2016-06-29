@@ -64,15 +64,31 @@ public class AStern : MonoBehaviour {
 		return get_nearest_node (position, node_type_lists[Node.way_point_type.ammo]);
 	}
 
+	public bool node_still_viable_cover(Node cover,Vector2 position,Vector3 target_position){
+		Vector3 rel_pos = target_position - cover.transform.position;
+		rel_pos.Normalize ();
+		float angle = Mathf.Atan2(rel_pos.y,rel_pos.x)*Mathf.Rad2Deg;
+		if (angle < 0) {
+			angle = 360 + angle;
+		}
+
+
+		foreach (var dir in cover.cover_direction) {
+			if (Mathf.Abs ((int)dir - angle) > 45)
+				continue;
+			return true;
+		}
+
+		return false;
+
+	}
+
 	public Node get_nearest_cover_node(Vector2 position,Vector3 target_position){
 		if(node_type_lists[Node.way_point_type.cover].Count == 0)
 			find_connections ();
 		float current_min_dist = float.MaxValue;
 		Node current_min_node = null;
 		foreach (Node n in node_type_lists[Node.way_point_type.cover]) {
-			RaycastHit2D hit = Physics2D.Linecast(n.transform.position, target_position, obscured_hit_mask);
-			if (hit)
-				continue;
 			Vector3 rel_pos = target_position - n.transform.position;
 			rel_pos.Normalize ();
 			float angle = Mathf.Atan2(rel_pos.y,rel_pos.x)*Mathf.Rad2Deg;
@@ -142,13 +158,13 @@ public class AStern : MonoBehaviour {
 
 				bool add_connection = true;
 
-                RaycastHit2D hit = Physics2D.Linecast(n.transform.position, n2.transform.position, hit_mask);//Physics2D.CircleCast(n.transform.position, raycast_thicknes, ray,).Raycast(n.transform.position, ray, 1000000, hit_mask);
+				RaycastHit2D hit = Physics2D.Linecast(n.transform.position, n2.transform.position, hit_mask | obscured_hit_mask);//Physics2D.CircleCast(n.transform.position, raycast_thicknes, ray,).Raycast(n.transform.position, ray, 1000000, hit_mask);
 				add_connection &= !hit;
 
-                hit = Physics2D.Linecast(n.transform.position + normal * raycast_thicknes, n2.transform.position + normal * raycast_thicknes, hit_mask); //Physics2D.Raycast(n.transform.position + normal * raycast_thicknes, ray, 1000000, hit_mask);
+				hit = Physics2D.Linecast(n.transform.position + normal * raycast_thicknes, n2.transform.position + normal * raycast_thicknes, hit_mask| obscured_hit_mask); //Physics2D.Raycast(n.transform.position + normal * raycast_thicknes, ray, 1000000, hit_mask);
 				add_connection &= !hit;
 
-                hit = Physics2D.Linecast(n.transform.position - normal * raycast_thicknes, n2.transform.position - normal * raycast_thicknes, hit_mask); //Physics2D.Raycast(n.transform.position - normal * raycast_thicknes, ray, 1000000, hit_mask);
+				hit = Physics2D.Linecast(n.transform.position - normal * raycast_thicknes, n2.transform.position - normal * raycast_thicknes, hit_mask| obscured_hit_mask); //Physics2D.Raycast(n.transform.position - normal * raycast_thicknes, ray, 1000000, hit_mask);
 				add_connection &= !hit;
 
 				if (add_connection) {
@@ -168,7 +184,7 @@ public class AStern : MonoBehaviour {
 	public List<Node> get_path(Node start,Node end){
 		return get_path (start,end,new Vector3(0,0,0),0);
 	}
-	public List<Node> get_path(Node start,Node end, Vector3 target ,int visibility_cost = 0 ,float visibility_cost_distance = 10){
+	public List<Node> get_path(Node start,Node end, Vector3 target ,int visibility_cost = 0){
 		
 		SimplePriorityQueue<Node> openlist = new SimplePriorityQueue<Node> ();
 		List<Node> closedlist = new List<Node>();
@@ -191,13 +207,15 @@ public class AStern : MonoBehaviour {
 				if( closedlist.Contains(n))continue;
 				if (!visibility_cost_map.ContainsKey (n)) {
 					int add_cost = 0;
-					if (Physics2D.Linecast(n.transform.position,target,hit_mask.value|obscured_hit_mask.value)) {
+					var hit = Physics2D.Linecast (n.transform.position, target, hit_mask.value | obscured_hit_mask.value);
+					if (!hit) {
 						add_cost += visibility_cost;
+						Debug.DrawLine (n.transform.position + Vector3.left, n.transform.position + Vector3.right,Color.black,10);
+						Debug.DrawLine (n.transform.position + Vector3.up, n.transform.position + Vector3.down,Color.black,10);
 					}
 
 					visibility_cost_map.Add (n, add_cost);
 				}
-					
 				int tentative_g = current_node.value + current_node.real_value + visibility_cost_map[n] + Mathf.RoundToInt(Vector3.Distance(current_node.transform.position, n.transform.position)) ;
 
 				if(openlist.Contains(n) && tentative_g >= n.value)continue;

@@ -12,6 +12,11 @@ public class find_ammo_task : Task
 	{
 		base.Activate (go);
 
+	}
+
+	public override void Update(float dt, GameObject go){
+		base.Update (dt, go);
+
 		CharController cc = go.GetComponent<CharController>();
 		cc.claim_node (null);
 		cc.changestate (new NPCWalking ());
@@ -27,33 +32,13 @@ public class find_ammo_task : Task
 
 		if (end_node != null) {
 			cc.claim_node (end_node);
-			var path = cc.nav_path.get_path (start_node, end_node,player.transform.position,10);
+			var path = cc.nav_path.get_path (start_node, end_node,player.transform.position,100000);
 			foreach (var n in path)
 				path_.Enqueue (n);
 
 			//cc.walktarget (cc.path.Peek ().transform.position);
 		}
 		cc.Path = path_;
-	}
-
-	public override void Update(float dt, GameObject go){
-		base.Update (dt, go);
-
-		CharController cc = go.GetComponent<CharController>();
-
-		if (cc.Path.Count <= 0){
-			parentNode.ChildTerminated (go,this, true);
-			return;
-		}
-
-		cc.movedirection (cc.Path.Peek().transform.position-cc.transform.position);
-		cc.target (cc.Path.Peek ().transform.position);
-
-		if (Vector3.Distance (go.transform.position, cc.Path.Peek().transform.position) < cc.speed*Time.deltaTime) {
-			cc.movedirection (cc.Path.Peek().transform.position-cc.transform.position,Vector3.Distance (go.transform.position, cc.Path.Peek().transform.position));
-			cc.Path.Dequeue ();
-			//cc.walktarget (cc.path.Peek ().transform.position);
-		} 
 
 	}
 }

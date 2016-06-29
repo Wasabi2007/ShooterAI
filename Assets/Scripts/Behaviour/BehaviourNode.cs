@@ -12,7 +12,7 @@ public abstract class BehaviourNode : ParentNode,LeafNode {
 
 	public bool isRoot { get { return (parentNode == null || parentNode == this); } }
 
-    public string get_path(string s = "")
+	public virtual string get_path(string s = "")
     {
         s += this.GetType().Name + " -> ";
         foreach (LeafNode child in ChildNodes)

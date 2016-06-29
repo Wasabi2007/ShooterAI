@@ -15,6 +15,15 @@ public class ParralelNode : BehaviourNode {
 		}
 	}
 
+	public override string get_path(string s = "")
+	{
+		s += this.GetType().Name + " -> " + "(" ;
+		foreach (LeafNode child in ChildNodes)
+			if (child.IsActive)
+				s = child.get_path(s)+")";
+		return s;
+	}
+
 	public override void ChildTerminated (GameObject go,BehaviourInterface child,bool result)
 	{
 		child.Deactivate (go);
@@ -22,13 +31,16 @@ public class ParralelNode : BehaviourNode {
 		if (!result){
 			if(!isRoot){
 				parentNode.ChildTerminated(go,this,false);
+				foreach (LeafNode childNode in childNodes) {
+					childNode.Deactivate (go);
+				}
 			}else{
 				Deactivate(go);
 			}
 		}
 
 		if(!isRoot && childReturns >= childNodes.Count){
-			parentNode.ChildTerminated(go,this,true);
+			parentNode.ChildTerminated(go,this,result);
 		}
 
 		if (isRoot && childReturns >= childNodes.Count) {

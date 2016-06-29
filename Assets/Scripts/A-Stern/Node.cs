@@ -37,7 +37,7 @@ public class Node : MonoBehaviour {
 	public float cover_range;
 	public LayerMask full_cover_cast;
 
-	public int base_value = 100000;
+	public int base_value = 1000;
 	[HideInInspector]
 	public int real_value = 0;
 

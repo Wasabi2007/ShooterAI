@@ -96,55 +96,108 @@ public class CharController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		root = new UtilFail ();
-		var selector = new Selector ();
-		var sequence = new Sequence ();
-		var sgtask = new search_and_go_to_cover_task (0.6f);
+		{
+			var selector = new Selector ();
+			{
+				var until_fail = new UtilFail (false);
+				{
+					var sequence = new Sequence ();
+					{
+						var isnearnode = new is_in_range (follow_range, "Player");
+						var iscoverdnode = new is_cover_blown_condition ("Player");
+						var until_fail2 = new UtilFail (true);
+						var cover = new cover_task ();
+						var enough_ammo = new has_ammo_condition (1);
 
-		var sequence3 = new Sequence ();
-		var selector2 = new Selector ();
-		var enough_ammo3 = new has_ammo_condition (1);
-		var find_ammo = new find_ammo_task ();
+						sequence.AddChild (isnearnode);
+						sequence.AddChild (iscoverdnode);
+						sequence.AddChild (until_fail2);
+						sequence.AddChild (cover);
+						sequence.AddChild (enough_ammo);
+						{
+							var sequence2 = new Sequence ();
+							{
+								var dangernode = new shoot_on_me_condition ();
+								isnearnode = new is_in_range (follow_range, "Player");
+								var shoottargetnode = new shoot_on_target_task ("Player");
+								enough_ammo = new has_ammo_condition (1);
 
+								sequence2.AddChild (dangernode);
+								sequence2.AddChild (isnearnode);
+								sequence2.AddChild (shoottargetnode);
+								sequence2.AddChild (enough_ammo);
+							}
+							until_fail2.AddChild (sequence2);
+						}
 
-		var until_fail = new UtilFail (false);
+					}
+					until_fail.AddChild (sequence);
 
-		var isnearnode = new is_in_range (follow_range, "Player");
-		var iscoverdnode = new is_cover_blown_condition ("Player");
-		var until_fail2 = new UtilFail (true);
-		var cover = new cover_task ();
-		var enough_ammo2 = new has_ammo_condition (1);
+				}
 
-		var sequence2 = new Sequence ();
-		var dangernode = new shoot_on_me_condition ();
-		var isnearnode2 = new is_in_range (follow_range, "Player");
-		var shoottargetnode = new shoot_on_target_task ("Player");
-		var enough_ammo1 = new has_ammo_condition (1);
+			}
+			{
+				var sequence1 = new Sequence ();
+				{
+					var selector2 = new Selector ();
+					{
+						var enough_ammo3 = new has_ammo_condition (1);
+						var sequence2 = new Sequence ();
+						{
+							var find_ammo = new find_ammo_task ();
+							var until_fail2 = new UtilFail (true);
+							{
+								var next_waypoint = new go_to_next_waypoint_task ();
+								until_fail2.AddChild (next_waypoint);
+							}
 
-		sequence2.AddChild (dangernode);
-		sequence2.AddChild (isnearnode2);
-		sequence2.AddChild (shoottargetnode);
-		sequence2.AddChild (enough_ammo1);
+						}
+						selector2.AddChild (enough_ammo3);
+						selector2.AddChild (sequence2);
+					}
+					var sequence3 = new Sequence ();
+					{
+						var sgtask = new search_and_go_to_cover_task (0.6f);
+						var until_fail3 = new UtilFail (true);
+						{
+							var parralel = new ParralelNode ();
+							{
+								var sequence4 = new Sequence ();
+								{
+									var is_way_good = new way_still_good_condition (0.6f);
+									var next_waypoint = new go_to_next_waypoint_task ();
+									sequence4.AddChild (is_way_good);
+									sequence4.AddChild (next_waypoint);
+								}
+								var selector3 = new Selector ();
+								{
+									var sequence5 = new Sequence ();
+									{
+										var isnearnode = new is_in_range (follow_range, "Player");
+										var shoottargetnode = new shoot_on_target_task ("Player");
+										sequence5.AddChild (isnearnode);
+										sequence5.AddChild (shoottargetnode);
+									}
+									var enough_ammo4 = new has_ammo_condition (1);
+									selector3.AddChild (sequence5);
+									selector3.AddChild (enough_ammo4);
+								}
+								parralel.AddChild (sequence4);
+								parralel.AddChild (selector3);
+							}
+							until_fail3.AddChild(parralel);
+						}
+						sequence3.AddChild (sgtask);
+						sequence3.AddChild (until_fail3);
+					}
+					sequence1.AddChild (selector2);
+					sequence1.AddChild (sequence3);
+				}
+				selector.AddChild (sequence1);
+			}
+			root.AddChild (selector);
+		}
 
-		until_fail2.AddChild (sequence2);
-
-		sequence.AddChild (isnearnode);
-		sequence.AddChild (iscoverdnode);
-		sequence.AddChild (until_fail2);
-		sequence.AddChild (cover);
-		sequence.AddChild (enough_ammo2);
-
-		until_fail.AddChild (sequence);
-
-		selector2.AddChild (enough_ammo3);
-		selector2.AddChild (find_ammo);
-
-
-		sequence3.AddChild (selector2);
-		sequence3.AddChild (sgtask);
-
-		selector.AddChild (until_fail);
-		selector.AddChild (sequence3);
-		root.AddChild (selector);
 
 
 		rigid = GetComponent<Rigidbody2D> ();
@@ -202,8 +255,7 @@ public class CharController : MonoBehaviour {
 	}
 
 	public bool is_behind_cover (Vector3 target_position){
-		var rel_pos = (Vector2)target_position-rigid.position;
-		var hit = Physics2D.Raycast (rigid.position, rel_pos.normalized,float.MaxValue,CoverLayer);
+		var hit = Physics2D.Linecast (rigid.position, target_position,CoverLayer);
 
 		return !hit;
 	}
@@ -212,6 +264,11 @@ public class CharController : MonoBehaviour {
 		var rel_pos = (Vector2)target_position-rigid.position;
 		var hit = Physics2D.Raycast (rigid.position, rel_pos.normalized);
 		return !hit;
+	}
+
+	public void set_to_position(Vector3 pos){
+		rigid.position = pos;
+		move_direction = Vector2.zero;
 	}
 
 	public void movedirection(Vector3 dir,float speed_mod = 1){
