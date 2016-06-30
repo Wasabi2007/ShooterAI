@@ -49,8 +49,8 @@ public class DebugInput : MonoBehaviour {
 
 
 		Name.text = npcs[npc_index].gameObject.name;
-        Health.text = "Health: "+ npcs[npc_index].Health+"/"+npcs[npc_index].MaxHealth;
-        Ammo.text = "Ammo: " + npcs[npc_index].Ammo + "/" + npcs[npc_index].AmmoMax;
+        Health.text = "Health: "+ npcs[npc_index].health+"/"+npcs[npc_index].health_max;
+        Ammo.text = "Ammo: " + npcs[npc_index].ammo + "/" + npcs[npc_index].ammo_max;
         Behaviour.text = "Behaviour: " + npcs[npc_index].current_behavoiur();
 	
 	}

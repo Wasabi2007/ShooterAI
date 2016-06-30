@@ -13,8 +13,8 @@ public class cover_task : Task
 
 		cc.movedirection (Vector3.zero);
 
-		if(!cc.isincover())
-			cc.changestate (new NPCInCover ());
+		if(!cc.is_incover())
+			cc.change_state (new NPCInCover ());
 
 		parentNode.ChildTerminated (go, this, true);
 	}

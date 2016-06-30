@@ -31,7 +31,7 @@ public class Bullet : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D coll) {
 
-		coll.gameObject.SendMessage("applydirecteddamage", info, SendMessageOptions.DontRequireReceiver);
+		coll.gameObject.SendMessage("apply_directed_damage", info, SendMessageOptions.DontRequireReceiver);
 		if(coll.gameObject.layer == 0 || coll.gameObject.tag == "Envoy"){
 			GameObject.Destroy (gameObject);
 		}

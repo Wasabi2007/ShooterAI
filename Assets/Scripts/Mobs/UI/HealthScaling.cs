@@ -13,7 +13,7 @@ public class HealthScaling : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		Vector3 scale = transform.localScale;
-		scale.x = (char_controller.Health / char_controller.MaxHealth);
+		scale.x = (char_controller.health / char_controller.health_max);
 		transform.localScale = scale;
 	}
 }

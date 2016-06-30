@@ -16,7 +16,7 @@ public class has_ammo_condition: Task
 
 		var cc = go.GetComponent<CharController> ();
 
-		parentNode.ChildTerminated (go, this, cc.Clips >= not_less_than);
+		parentNode.ChildTerminated (go, this, cc.clips >= not_less_than);
 	}
 }
 

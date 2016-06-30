@@ -11,7 +11,7 @@ public class NPCInCover : CharState
 		
 	public override void update (CharController owner)
 	{
-		owner.changecolor (Color.gray);
+		owner.change_color (Color.gray);
 	}
 }
 

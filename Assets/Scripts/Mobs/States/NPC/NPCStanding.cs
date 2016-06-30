@@ -10,9 +10,9 @@ public class NPCStanding : CharState
 		
 	public override void update (CharController owner)
 	{
-		owner.changecolor (Color.blue);
-		if (owner.ismoveing ()) {
-			owner.changestate(new NPCWalking());
+		owner.change_color (Color.blue);
+		if (owner.is_moveing ()) {
+			owner.change_state(new NPCWalking());
 		}
 	}
 }

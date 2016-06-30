@@ -22,7 +22,7 @@ public class search_and_go_to_cover_task:Task
 
 		CharController cc = go.GetComponent<CharController>();
 		cc.claim_node (null);
-		cc.changestate (new NPCWalking ());
+		cc.change_state (new NPCWalking ());
 
 		Node start_node = cc.nav_path.get_nearest_node (go.transform.position);
 

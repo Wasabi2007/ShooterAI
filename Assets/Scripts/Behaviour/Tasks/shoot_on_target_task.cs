@@ -18,7 +18,7 @@ public class shoot_on_target_task : Task
 		var cc = go.GetComponent<CharController> ();
 		//cc.movedirection (Vector3.zero);
 
-		cc.changestate (new NPCShooting ());
+		cc.change_state (new NPCShooting ());
 
 		var target = GameObject.FindGameObjectWithTag (target_tag_);
 		cc.target (target.transform.position);

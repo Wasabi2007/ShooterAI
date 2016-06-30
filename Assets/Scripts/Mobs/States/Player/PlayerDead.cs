@@ -12,7 +12,7 @@ public class PlayerDead : CharState
 
 	public override void update (CharController owner)
 	{
-		owner.changecolor (Color.clear);
+		owner.change_color (Color.clear);
 		SceneManager.LoadScene ("End");
 	}
 }

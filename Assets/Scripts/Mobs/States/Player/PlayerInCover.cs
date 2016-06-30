@@ -11,10 +11,10 @@ public class PlayerInCover : CharState
 		
 	public override void update (CharController owner)
 	{
-		owner.changecolor (Color.gray);
+		owner.change_color (Color.gray);
 		owner.movedirection (Vector2.zero);
 		if (Input.GetKeyDown (KeyCode.Q)) {
-			owner.changestate (new PlayerStanding ());
+			owner.change_state (new PlayerStanding ());
 		}
 		owner.target (Camera.main.ScreenToWorldPoint(Input.mousePosition));
 	}

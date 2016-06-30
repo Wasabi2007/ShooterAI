@@ -11,8 +11,8 @@ public class go_to_next_waypoint_task:Task
 		base.Update (dt, go);
 
 		CharController cc = go.GetComponent<CharController>();
-		if(!cc.ismoveing()&&cc.currentstate() != States.Shooting)
-			cc.changestate (new NPCWalking ());
+		if(!cc.is_moveing()&&cc.currentstate() != States.Shooting)
+			cc.change_state (new NPCWalking ());
 		else if(cc.currentstate() == States.Walking)
 			cc.target (cc.Path.Peek ().transform.position);
 
@@ -20,7 +20,7 @@ public class go_to_next_waypoint_task:Task
 		//cc.target (cc.Path.Peek ().transform.position);
 
 		if (Vector3.Distance (go.transform.position, cc.Path.Peek().transform.position) < cc.speed*Time.deltaTime) {
-			cc.set_to_position (cc.Path.Peek ().transform.position);
+			cc.position (cc.Path.Peek ().transform.position);
 			//cc.movedirection (cc.Path.Peek().transform.position-cc.transform.position,Vector3.Distance (go.transform.position, cc.Path.Peek().transform.position));
 			cc.Path.Dequeue ();
 			//cc.walktarget (cc.path.Peek ().transform.position);

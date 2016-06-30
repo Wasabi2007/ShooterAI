@@ -7,7 +7,7 @@ public class AmmoPickUp : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D other){
 		if (other.gameObject.tag == "Enemy" || other.gameObject.tag == "Player") {
-			other.SendMessage ("addClips", worth, SendMessageOptions.DontRequireReceiver);
+			other.SendMessage ("add_clips", worth, SendMessageOptions.DontRequireReceiver);
 			GameObject.Destroy (gameObject);
 		}
 	}

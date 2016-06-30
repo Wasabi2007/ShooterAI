@@ -25,7 +25,7 @@ public class AmmoVisualisation : MonoBehaviour {
 		var zwich = (rt.rect.width / cols);
 		spritescaleing = zwich/ammo_sprite.rect.width;
 		rows = Mathf.CeilToInt (rt.rect.height/(ammo_sprite.rect.height*spritescaleing));
-        if (rows * cols > char_controller.AmmoMax) rows--;
+        if (rows * cols > char_controller.ammo_max) rows--;
 
 		Transform[] allTransforms = gameObject.GetComponentsInChildren<Transform>();
 
@@ -57,7 +57,7 @@ public class AmmoVisualisation : MonoBehaviour {
 
 		for (int y = 0; y < rows; ++y) {
 			for (int x = 0; x < cols; ++x) {
-				ammos [y*cols+x].color = (y*cols+x<char_controller.Ammo ? Color.white:Color.grey);
+				ammos [y*cols+x].color = (y*cols+x<char_controller.ammo ? Color.white:Color.grey);
 			}
 		}
 	}

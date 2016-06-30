@@ -10,7 +10,7 @@ public class PlayerWalking : CharState
 
 	public override void update (CharController owner)
 	{
-		owner.changecolor (Color.green);
+		owner.change_color (Color.green);
 		Vector2 dir = new Vector2(0,0);
 		if (Input.GetKey (KeyCode.W)) {
 			dir += Vector2.up;
@@ -26,15 +26,15 @@ public class PlayerWalking : CharState
 		}
 
 		if (!(Input.GetKey (KeyCode.W) || Input.GetKey (KeyCode.S) || Input.GetKey (KeyCode.A) || Input.GetKey (KeyCode.D) || Input.GetKey (KeyCode.Q))) {
-			owner.changestate (new PlayerStanding());
+			owner.change_state (new PlayerStanding());
 		}
 
 		if (Input.GetMouseButton (0)) {
-			owner.changestate (new PlayerShooting ());
+			owner.change_state (new PlayerShooting ());
 		}
 
 		if (Input.GetKey (KeyCode.Q)) {
-			owner.changestate (new PlayerInCover ());
+			owner.change_state (new PlayerInCover ());
 		} else {
 			owner.movedirection (dir);
 		}

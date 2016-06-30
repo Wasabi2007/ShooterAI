@@ -25,8 +25,8 @@ public class CharController : MonoBehaviour {
         return root.get_path();
     }
 
-	public float Health = 100;
-	public float MaxHealth = 100;
+	public float health = 100;
+	public float health_max = 100;
 
 	public Bullet bullet;
 	public SingleUnityLayer BulletLayer;
@@ -34,9 +34,9 @@ public class CharController : MonoBehaviour {
 
 
 	//todo move to WeaponComponent
-	public int Ammo;
-	public int AmmoMax;
-	public int Clips;
+	public int ammo;
+	public int ammo_max;
+	public int clips;
 	public float bullet_speed = 10;
 	public float bullet_firerate = 0.1f;
 	public float reload_speed = 1;
@@ -216,11 +216,11 @@ public class CharController : MonoBehaviour {
 
 	}
 
-	public bool ismoveing(){
+	public bool is_moveing(){
 		return move_direction.sqrMagnitude >= 0.00001 || current_state.state == States.Walking || rigid.velocity.sqrMagnitude >= 0.00001 ;
 	}
 
-	public bool isincover(){
+	public bool is_incover(){
 		return current_state.state == States.InCover;
 	}
 
@@ -228,11 +228,11 @@ public class CharController : MonoBehaviour {
 		return current_state.state;
 	}
 
-	public void changecolor(Color state){
+	public void change_color(Color state){
 		render.color = state;
 	}
 
-	public void changestate(CharState state){
+	public void change_state(CharState state){
 		current_state = state;
 	} 
 	
@@ -268,7 +268,7 @@ public class CharController : MonoBehaviour {
 		return !hit;
 	}
 
-	public void set_to_position(Vector3 pos){
+	public void position(Vector3 pos){
 		rigid.position = pos;
 		move_direction = Vector2.zero;
 	}
@@ -282,7 +282,7 @@ public class CharController : MonoBehaviour {
 		rigid.MoveRotation (Mathf.Atan2(rel_pos.y,rel_pos.x)*Mathf.Rad2Deg);
 	}
 
-	public void walktarget(Vector3 target_position){
+	public void walk_to_target(Vector3 target_position){
 		rigid.MoveRotation (Vector2.Dot(Vector2.up,(Vector2)target_position-rigid.position));
 
 		walk_progress = 0;
@@ -293,7 +293,7 @@ public class CharController : MonoBehaviour {
 	}
 
 	public bool shoot(){
-		if (last_shoot + bullet_firerate < Time.time && Ammo > 0) {
+		if (last_shoot + bullet_firerate < Time.time && ammo > 0) {
 			last_shoot = Time.time;
 			GameObject go =	GameObject.Instantiate<GameObject> (bullet.gameObject);
 			go.layer = BulletLayer.LayerIndex;
@@ -302,41 +302,41 @@ public class CharController : MonoBehaviour {
 			bul.damage = 10;
 			bul.speed = bullet_speed;
 			bul.dir = Quaternion.AngleAxis (rigid.rotation, Vector3.forward) * Vector2.right;
-			Ammo--;
-			if(Ammo == 0)
+			ammo--;
+			if(ammo == 0)
 				reload_time = Time.time + reload_speed;
 		}
 
-		if (Ammo == 0 && Clips > 0 && reload_time < Time.time) {
-			Clips--;
-			Ammo = AmmoMax;
+		if (ammo == 0 && clips > 0 && reload_time < Time.time) {
+			clips--;
+			ammo = ammo_max;
 		}
 
-		return Ammo > 0;
+		return ammo > 0;
 	}
 
-	public void addClips(int clips){
-		Clips += clips;
+	public void add_clips(int clips){
+		this.clips += clips;
 	}
 
 
-	public void applydamage(float damage){
+	public void apply_damage(float damage){
         if (god_mode) return;
-		Health -= damage;
-		if (Health < 0) {
+		health -= damage;
+		if (health < 0) {
 			if(NPC)
 				GameObject.Destroy (gameObject);
 
 			rigid.constraints = RigidbodyConstraints2D.FreezeAll;
-			changestate(new PlayerDead());
+			change_state(new PlayerDead());
 		}
 	}
 
-	public void applydirecteddamage(System.Object[] info){
+	public void apply_directed_damage(System.Object[] info){
 		float damage = (float)info [0];
 		Vector2 dir = ((Vector2)info [1])*-1;
 		if (!Physics2D.Raycast (rigid.position, dir, 1.0f, CoverLayer) || current_state.state != States.InCover) {
-			applydamage(damage);
+			apply_damage(damage);
 			GameObject.Destroy ((Object)info [2]);
 		}
 	}

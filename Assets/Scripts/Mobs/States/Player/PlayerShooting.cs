@@ -10,7 +10,7 @@ public class PlayerShooting : CharState
 		
 	public override void update (CharController owner)
 	{
-		owner.changecolor (Color.red);
+		owner.change_color (Color.red);
 
 		if (Input.GetMouseButton (0)) {
 			owner.shoot ();
@@ -32,11 +32,11 @@ public class PlayerShooting : CharState
 			owner.movedirection (dir);
 
 		} else if (Input.GetKey (KeyCode.W) || Input.GetKey (KeyCode.S) || Input.GetKey (KeyCode.A) || Input.GetKey (KeyCode.D)) {
-			owner.changestate (new PlayerWalking ());
+			owner.change_state (new PlayerWalking ());
 		} else if (Input.GetKeyDown (KeyCode.Q)) {
-			owner.changestate (new PlayerInCover ());
+			owner.change_state (new PlayerInCover ());
 		} else {
-			owner.changestate (new PlayerStanding ());	
+			owner.change_state (new PlayerStanding ());	
 		}
 		owner.target (Camera.main.ScreenToWorldPoint(Input.mousePosition));
 	}

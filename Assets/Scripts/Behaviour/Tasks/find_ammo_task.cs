@@ -11,8 +11,6 @@ public class find_ammo_task : Task
 	public override void Activate (GameObject go)
 	{
 		base.Activate (go);
-
-		Debug.Log ("Find ammo?");
 	}
 
 	public override void Update(float dt, GameObject go){
