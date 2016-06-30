@@ -319,6 +319,14 @@ public class CharController : MonoBehaviour {
 		this.clips += clips;
 	}
 
+	public void heal(float health_boost){
+		if (health + health_boost < health_max) {
+			health += health_boost;
+		} else {
+			health = health_max;
+		}
+	}
+
 
 	public void apply_damage(float damage){
         if (god_mode) return;
