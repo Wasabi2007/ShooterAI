@@ -6,17 +6,21 @@ using System.Collections;
 
 public class enable_if_gizmo : MonoBehaviour {
 
+	bool was_visible;
 	// Use this for initialization
 	void Start () {
-	
+		was_visible = AreGizmosVisible ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		bool visible = AreGizmosVisible ();
-		for (int i = 0; i < transform.childCount; ++i) {
-			transform.GetChild (i).gameObject.SetActive (visible);
-		}	
+		if (visible != was_visible) {
+			for (int i = 0; i < transform.childCount; ++i) {
+				transform.GetChild (i).gameObject.SetActive (visible);
+			}	
+			was_visible = visible;
+		}
 	}
 
 
