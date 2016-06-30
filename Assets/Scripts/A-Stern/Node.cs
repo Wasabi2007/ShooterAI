@@ -19,7 +19,8 @@ public class Node : MonoBehaviour {
 		cover,
 		fullcover,
 		cover_fullcover,
-		ammo
+		ammo,
+		health
 	}
 
 	public way_point_type way_point_type_;
@@ -29,6 +30,7 @@ public class Node : MonoBehaviour {
 	public Sprite cover_img;
 	public Sprite normal_img;
 	public Sprite ammo_img;
+	public Sprite health_img;
 
 	public static bool show_all_connections = false;
 	public static int show_percent_connections = 0;
@@ -166,6 +168,7 @@ public class Node : MonoBehaviour {
 		case way_point_type.fullcover:{sr.sprite = cover_img;Gizmos.color = Color.yellow;}break;
 		case way_point_type.cover_fullcover:{sr.sprite = cover_img;Gizmos.color = Color.cyan;}break;
 		case way_point_type.ammo:{sr.sprite = ammo_img;}break;
+		case way_point_type.health:{sr.sprite = health_img;}break;
 		}
 
 
