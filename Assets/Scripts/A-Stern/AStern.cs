@@ -65,6 +65,10 @@ public class AStern : MonoBehaviour {
 	}
 
 	public bool node_still_viable_cover(Node cover,Vector2 position,Vector3 target_position){
+		RaycastHit2D hit = Physics2D.Linecast(cover.transform.position, target_position, obscured_hit_mask); //dont use cover where player is not seeable
+		if (hit)
+			return false;
+
 		Vector3 rel_pos = target_position - cover.transform.position;
 		rel_pos.Normalize ();
 		float angle = Mathf.Atan2(rel_pos.y,rel_pos.x)*Mathf.Rad2Deg;
@@ -89,6 +93,9 @@ public class AStern : MonoBehaviour {
 		float current_min_dist = float.MaxValue;
 		Node current_min_node = null;
 		foreach (Node n in node_type_lists[Node.way_point_type.cover]) {
+			RaycastHit2D hit = Physics2D.Linecast(n.transform.position, target_position, obscured_hit_mask);//dont use cover where player is not seeable
+			if (hit)
+				continue;
 			Vector3 rel_pos = target_position - n.transform.position;
 			rel_pos.Normalize ();
 			float angle = Mathf.Atan2(rel_pos.y,rel_pos.x)*Mathf.Rad2Deg;
@@ -109,7 +116,7 @@ public class AStern : MonoBehaviour {
 			}
 		}
 		foreach (Node n in node_type_lists[Node.way_point_type.cover_fullcover]) {
-			RaycastHit2D hit = Physics2D.Linecast(n.transform.position, target_position, obscured_hit_mask);
+			RaycastHit2D hit = Physics2D.Linecast(n.transform.position, target_position, obscured_hit_mask);//dont use cover where player is not seeable
 			if (hit)
 				continue;
 			
