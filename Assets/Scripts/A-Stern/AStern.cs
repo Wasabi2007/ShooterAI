@@ -63,6 +63,9 @@ public class AStern : MonoBehaviour {
 	public Node get_nearest_ammo_node(Vector2 position){
 		return get_nearest_node (position, node_type_lists[Node.way_point_type.ammo]);
 	}
+	public Node get_nearest_heath_spawn_node(Vector2 position){
+		return get_nearest_node (position, node_type_lists[Node.way_point_type.health]);
+	}
 
 	public bool node_still_viable_cover(Node cover,Vector2 position,Vector3 target_position){
 		RaycastHit2D hit = Physics2D.Linecast(cover.transform.position, target_position, obscured_hit_mask); //dont use cover where player is not seeable
