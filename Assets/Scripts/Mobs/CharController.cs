@@ -335,7 +335,9 @@ public class CharController : MonoBehaviour {
 	}
 
 	public void add_clips(int clips){
-		BroadcastMessage ("add_clips", clips);
+		foreach(var w in weapons){
+			w.add_clips (clips);
+		}
 	}
 
 	public void heal(float health_boost){
