@@ -20,12 +20,13 @@ public abstract class Weapon : MonoBehaviour {
 		if (last_shoot + bullet_firerate < Time.time && ammo > 0) {
 			last_shoot = Time.time;
 
+			ammo--;
+
 			if (ammo == 0)
 				reload_time = Time.time + reload_speed;
-
-			reload ();
 			return true;
 		}
+		reload ();
 
 		return false;
 
