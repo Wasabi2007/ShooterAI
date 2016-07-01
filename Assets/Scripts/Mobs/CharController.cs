@@ -28,20 +28,21 @@ public class CharController : MonoBehaviour {
 	public float health = 100;
 	public float health_max = 100;
 
-	public Bullet bullet;
+	public int clips{
+		get{ return (weapons.Length>0?weapons [selected_weapon].clips:0); }
+	}
+	public int ammo{
+		get{ return (weapons.Length>0?weapons [selected_weapon].ammo:0); }
+	}
+	public int ammo_max{
+		get{ return (weapons.Length>0?weapons [selected_weapon].ammo_max:0); }
+	}
+
 	public SingleUnityLayer BulletLayer;
 	public LayerMask CoverLayer;
 
-
-	//todo move to WeaponComponent
-	public int ammo;
-	public int ammo_max;
-	public int clips;
-	public float bullet_speed = 10;
-	public float bullet_firerate = 0.1f;
-	public float reload_speed = 1;
-	private float last_shoot;
-	private float reload_time;
+	private Weapon[] weapons = new Weapon[0];
+	private int selected_weapon = 0;
 
 	public float speed;
 
@@ -95,6 +96,13 @@ public class CharController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		weapons = GetComponentsInChildren<Weapon> ();
+		foreach(var w in weapons){
+			w.gameObject.SetActive (false);
+		}
+		Debug.Log ("weapons: "+weapons.Length);
+		weapons[selected_weapon].gameObject.SetActive (false);
+
 		root = new UtilFail ();
 		{
 			var selector00 = new Selector ();
@@ -319,30 +327,11 @@ public class CharController : MonoBehaviour {
 	}
 
 	public bool shoot(){
-		if (last_shoot + bullet_firerate < Time.time && ammo > 0) {
-			last_shoot = Time.time;
-			GameObject go =	GameObject.Instantiate<GameObject> (bullet.gameObject);
-			go.layer = BulletLayer.LayerIndex;
-			go.transform.position = transform.position;
-			var bul = go.GetComponent<Bullet> ();
-			bul.damage = 10;
-			bul.speed = bullet_speed;
-			bul.dir = Quaternion.AngleAxis (rigid.rotation, Vector3.forward) * Vector2.right;
-			ammo--;
-			if(ammo == 0)
-				reload_time = Time.time + reload_speed;
-		}
-
-		if (ammo == 0 && clips > 0 && reload_time < Time.time) {
-			clips--;
-			ammo = ammo_max;
-		}
-
-		return ammo > 0;
+		return weapons[selected_weapon].shoot(BulletLayer);
 	}
 
 	public void add_clips(int clips){
-		this.clips += clips;
+		BroadcastMessage ("add_clips", clips);
 	}
 
 	public void heal(float health_boost){

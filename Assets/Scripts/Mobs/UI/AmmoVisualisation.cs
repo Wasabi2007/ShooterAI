@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-[ExecuteInEditMode]
+//[ExecuteInEditMode]
 [RequireComponent(typeof(RectTransform))]
 public class AmmoVisualisation : MonoBehaviour {
 
@@ -50,6 +50,10 @@ public class AmmoVisualisation : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (ammos.Count != char_controller.ammo_max) {
+			Start ();
+		}
+
 		if (!char_controller || !ammo_sprite)
 				return;
 

@@ -1,5 +1,22 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &104570
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 417378}
+  - 58: {fileID: 5813422}
+  - 114: {fileID: 11446984}
+  m_Layer: 11
+  m_Name: Danger Detector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &167184
 GameObject:
   m_ObjectHideFlags: 0
@@ -19,6 +36,35 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &193888
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 401446}
+  - 114: {fileID: 11496916}
+  m_Layer: 9
+  m_Name: Machingun
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &401446
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 193888}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 0.1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 406450}
+  m_RootOrder: 1
 --- !u!4 &406450
 Transform:
   m_ObjectHideFlags: 1
@@ -26,11 +72,26 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 167184}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.46, y: 2.079, z: 0}
+  m_LocalPosition: {x: 25.63, y: 10.35, z: 0}
   m_LocalScale: {x: 0.15, y: 0.15, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_Children: []
+  m_Children:
+  - {fileID: 417378}
+  - {fileID: 401446}
   m_Father: {fileID: 0}
+  m_RootOrder: 0
+--- !u!4 &417378
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 104570}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 406450}
   m_RootOrder: 0
 --- !u!50 &5061522
 Rigidbody2D:
@@ -45,10 +106,24 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!58 &5813422
+CircleCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 104570}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 10
 --- !u!58 &5893360
 CircleCollider2D:
   m_ObjectHideFlags: 1
@@ -76,26 +151,48 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   god_mode: 0
   show_path: 0
-  Health: 100
-  MaxHealth: 100
-  bullet: {fileID: 11429464, guid: 79d3f9a6a45df4acb800e30312372ffa, type: 2}
+  health: 100
+  health_max: 100
   BulletLayer:
-    m_LayerIndex: 8
+    m_LayerIndex: 12
   CoverLayer:
     serializedVersion: 2
     m_Bits: 1024
-  Ammo: 0
-  AmmoMax: 0
-  Clips: 0
-  bullet_speed: 10
-  bullet_firerate: 0.1
-  reload_speed: 1
   speed: 10
   NPC: 1
   npc_in_cover: 0
   nav_path: {fileID: 0}
   follow_range: 10
   claimend_node: {fileID: 0}
+--- !u!114 &11446984
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 104570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 307fcc367b08d4a288699ee18fe3028c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &11496916
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 193888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4774fecb960a4fbabcd01f4aaf21bbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bullet: {fileID: 0}
+  ammo: 10
+  ammo_max: 10
+  clips: 2
+  bullet_speed: 10
+  bullet_firerate: 0.1
+  reload_speed: 1
 --- !u!212 &21281234
 SpriteRenderer:
   m_ObjectHideFlags: 1
