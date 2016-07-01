@@ -9,6 +9,7 @@ public class FillWithWayPoints : MonoBehaviour {
 	public int spacing_x = 1;
 	public int spacing_y = 1;
 	public LayerMask castLayer;
+	public float size_factor = 1;
 
 
 	// Use this for initialization
@@ -16,9 +17,11 @@ public class FillWithWayPoints : MonoBehaviour {
 		if (way_point) {
 			SpriteRenderer sprite_collider = way_point.GetComponent<SpriteRenderer> ();
 
+			var size = sprite_collider.bounds.size.magnitude * sprite_collider.transform.localScale.magnitude*size_factor;
+
 			for (float x = level_bounderies.min.x; x < level_bounderies.max.x; x += grid_cell_size.x * spacing_x)
 				for (float y = level_bounderies.min.y; y < level_bounderies.max.y; y += grid_cell_size.y * spacing_y) {
-					var circle_hit = Physics2D.OverlapCircle (new Vector2 (x, y), sprite_collider.bounds.size.magnitude,castLayer.value);
+					var circle_hit = Physics2D.OverlapCircle (new Vector2 (x, y),size ,castLayer.value);
 					if (circle_hit)
 						continue;
 					
@@ -38,15 +41,16 @@ public class FillWithWayPoints : MonoBehaviour {
 		if (way_point) {
 			SpriteRenderer sprite_collider = way_point.GetComponent<SpriteRenderer> ();
 
+			var size = sprite_collider.bounds.size.magnitude * sprite_collider.transform.localScale.magnitude*size_factor;
 
 			Gizmos.DrawWireCube (level_bounderies.center, level_bounderies.size);
 			for (float x = level_bounderies.min.x; x < level_bounderies.max.x; x += grid_cell_size.x * spacing_x)
 				for (float y = level_bounderies.min.y; y < level_bounderies.max.y; y += grid_cell_size.y * spacing_y) {
-					var circle_hit = Physics2D.OverlapCircle (new Vector2 (x, y), sprite_collider.bounds.size.magnitude,castLayer.value);
+					var circle_hit = Physics2D.OverlapCircle (new Vector2 (x, y), size ,castLayer.value);
 					if (circle_hit)
 						continue;
 				
-					Gizmos.DrawCube (new Vector3 (x, y), sprite_collider.bounds.size);
+					Gizmos.DrawCube (new Vector3 (x, y), sprite_collider.bounds.size*size);
 				}
 		}
 	}
