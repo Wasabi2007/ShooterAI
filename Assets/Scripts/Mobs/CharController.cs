@@ -100,7 +100,6 @@ public class CharController : MonoBehaviour {
 		foreach(var w in weapons){
 			w.gameObject.SetActive (false);
 		}
-		Debug.Log ("weapons: "+weapons.Length);
 		weapons[selected_weapon].gameObject.SetActive (false);
 
 		root = new UtilFail ();
@@ -287,6 +286,11 @@ public class CharController : MonoBehaviour {
 			target (walk_target);
 		}
 
+		float axis_input = Input.GetAxis ("Mouse ScrollWheel");
+
+		if (Mathf.Abs(axis_input) > 0) {
+			selected_weapon = (selected_weapon+(int)Mathf.Sign (axis_input)+weapons.Length)%weapons.Length;
+		}
 	}
 
 	public bool is_behind_cover (Vector3 target_position){
