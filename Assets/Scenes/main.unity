@@ -443,6 +443,10 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 473455597}
   m_Script: {fileID: 11500000, guid: 0c78d13a851164049a7b1bdf1e6e31f6, type: 3}
+--- !u!4 &26198769 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 445834, guid: c8bd3dbe1d1b7497faaeb25abafbebb3, type: 2}
+  m_PrefabInternal: {fileID: 473455597}
 --- !u!1 &26997442
 GameObject:
   m_ObjectHideFlags: 0
@@ -23428,6 +23432,55 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1269083702}
+--- !u!1 &1269673282
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 158700, guid: c8bd3dbe1d1b7497faaeb25abafbebb3, type: 2}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1269673283}
+  - 114: {fileID: 1269673284}
+  m_Layer: 9
+  m_Name: Shotgun
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1269673283
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 433626, guid: c8bd3dbe1d1b7497faaeb25abafbebb3, type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1269673282}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 26198769}
+  m_RootOrder: 1
+--- !u!114 &1269673284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1269673282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40cf83f0b830f457e8133da0542fd42d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bullet: {fileID: 11429464, guid: 79d3f9a6a45df4acb800e30312372ffa, type: 2}
+  ammo: 7
+  ammo_max: 7
+  clips: 10
+  bullet_speed: 5
+  bullet_firerate: 0.5
+  reload_speed: 1
+  spreat_size: 0.3
+  pallets: 10
 --- !u!1 &1269898109
 GameObject:
   m_ObjectHideFlags: 0
