@@ -26,10 +26,9 @@ public class Machinegun : Weapon
 			bul.damage = 10;
 			bul.speed = bullet_speed;
 			bul.dir = Quaternion.AngleAxis (transform.rotation.eulerAngles.z, Vector3.forward) * Vector2.right;
-			return true;
 		}
 
-		return false;
+		return ammo > 0;
 	}
 }
 
