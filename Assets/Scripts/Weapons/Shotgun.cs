@@ -14,7 +14,7 @@ public class Shotgun : Weapon
 				go.layer = BulletLayer.LayerIndex;
 				go.transform.position = transform.position;
 				var bul = go.GetComponent<Bullet> ();
-				bul.damage = 10;
+				bul.damage = bullet_damage;
 				bul.speed = bullet_speed;
 
 				var variation = Random.insideUnitCircle*spreat_size;

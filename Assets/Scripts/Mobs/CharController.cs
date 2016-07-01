@@ -289,7 +289,10 @@ public class CharController : MonoBehaviour {
 		float axis_input = Input.GetAxis ("Mouse ScrollWheel");
 
 		if (Mathf.Abs(axis_input) > 0) {
+			weapons [selected_weapon].gameObject.SetActive (false);
 			selected_weapon = (selected_weapon+(int)Mathf.Sign (axis_input)+weapons.Length)%weapons.Length;
+			weapons [selected_weapon].gameObject.SetActive (true);
+
 		}
 	}
 
@@ -359,6 +362,7 @@ public class CharController : MonoBehaviour {
 			rigid.constraints = RigidbodyConstraints2D.FreezeAll;
 			change_state(new PlayerDead());
 		}
+		danger ();
 	}
 
 	public void apply_directed_damage(System.Object[] info){
@@ -370,7 +374,7 @@ public class CharController : MonoBehaviour {
 		}
 	}
 
-	public void danger(Vector3 pos){
+	public void danger(Vector3 pos = new Vector3()){
 		danger_pos_ = pos;
 		danger_time_ = Time.time;
 	}

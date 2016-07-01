@@ -23,7 +23,7 @@ public class Machinegun : Weapon
 			go.layer = BulletLayer.LayerIndex;
 			go.transform.position = transform.position;
 			var bul = go.GetComponent<Bullet> ();
-			bul.damage = 10;
+			bul.damage = bullet_damage;
 			bul.speed = bullet_speed;
 			bul.dir = Quaternion.AngleAxis (transform.rotation.eulerAngles.z, Vector3.forward) * Vector2.right;
 		}

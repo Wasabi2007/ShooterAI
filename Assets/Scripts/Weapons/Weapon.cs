@@ -11,6 +11,7 @@ public abstract class Weapon : MonoBehaviour {
 	public float bullet_speed = 10;
 	public float bullet_firerate = 0.1f;
 	public float reload_speed = 1;
+	public float bullet_damage = 10;
 	protected float last_shoot;
 	protected float reload_time;
 
