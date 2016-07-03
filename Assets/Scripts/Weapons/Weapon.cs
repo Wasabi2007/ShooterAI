@@ -18,7 +18,7 @@ public abstract class Weapon : MonoBehaviour {
 
 	public virtual bool shoot (SingleUnityLayer BulletLayer){
 
-		if (last_shoot + bullet_firerate < Time.time && ammo > 0) {
+		if (last_shoot + bullet_firerate < Time.time && (ammo > 0 || ammo_max <= 0)) {
 			last_shoot = Time.time;
 
 			ammo--;
