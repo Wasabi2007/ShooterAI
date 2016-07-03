@@ -19,7 +19,7 @@ public class DebugInput : MonoBehaviour {
         var list = GameObject.FindObjectsOfType < CharController>();
         foreach (var ch in list)
         {
-            if (ch.NPC) npcs.Add(ch);
+			if (ch.char_type == CharController.CharType.NPC || ch.char_type == CharController.CharType.NPC_Melee) npcs.Add(ch);
         }
         nextNPC();
 	}

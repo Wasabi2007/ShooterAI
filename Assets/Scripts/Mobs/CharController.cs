@@ -7,6 +7,12 @@ using System.Collections.Generic;
 [RequireComponent(typeof(SpriteRenderer))]
 public class CharController : MonoBehaviour {
 
+	public enum CharType{
+		Player,
+		NPC,
+		NPC_Melee
+	}
+
     //Debug
     public bool god_mode;
     public void set_godmode(bool value)
@@ -46,7 +52,7 @@ public class CharController : MonoBehaviour {
 
 	public float speed;
 
-	public bool NPC;
+	public CharType char_type;
 	public bool npc_in_cover = false;//Debug
 	public AStern nav_path;
 	public float follow_range = 100;
@@ -94,14 +100,7 @@ public class CharController : MonoBehaviour {
 		claimend_node = node;
 	}
 
-	// Use this for initialization
-	void Start () {
-		weapons = GetComponentsInChildren<Weapon> ();
-		foreach(var w in weapons){
-			w.gameObject.SetActive (false);
-		}
-		weapons[selected_weapon].gameObject.SetActive (false);
-
+	void setup_normal_ki(){
 		root = new UtilFail ();
 		{
 			var selector00 = new Selector ();
@@ -229,14 +228,59 @@ public class CharController : MonoBehaviour {
 				selector00.AddChild (sequence6);
 			}
 			root.AddChild (selector00);
+		}
+	}
 
+	void setup_melee_ki(){
+		root = new UtilFail ();
+		{
+			var sequence00 = new Sequence ();
+			{
+				var sequence01 = new Sequence ();
+				{
+					var player_find = new find_player_task();
+					var unitlfail = new UtilFail();
+					{
+						var selector01 = new Selector ();
+						{
+							var player_moved = new target_moved_condition();
+							var next_waypoint = new  go_to_next_waypoint_task();
+							selector01.AddChild (player_moved);
+							selector01.AddChild (next_waypoint);
+						}
+						unitlfail.AddChild(selector01);
+					}
+					sequence01.AddChild (player_find);
+					sequence01.AddChild (unitlfail);
+				}
+				var attack = new shoot_on_target_task("Player");
+				sequence00.AddChild (sequence01);
+				sequence00.AddChild (attack);
+			}
+			root.AddChild (sequence00);
+		}
+	}
+
+	// Use this for initialization
+	void Start () {
+		weapons = GetComponentsInChildren<Weapon> ();
+		foreach(var w in weapons){
+			w.gameObject.SetActive (false);
+		}
+		weapons[selected_weapon].gameObject.SetActive (false);
+
+		if(char_type == CharType.NPC){
+			setup_normal_ki();
+		}
+		if(char_type == CharType.NPC_Melee){
+			setup_melee_ki();
 		}
 
 
 
 		rigid = GetComponent<Rigidbody2D> ();
 		render = GetComponent<SpriteRenderer> ();
-		if (NPC) {
+		if (char_type == CharType.NPC|| char_type == CharType.NPC_Melee) {
 			if (npc_in_cover)
 				current_state = new NPCInCover ();
 			else
@@ -271,7 +315,7 @@ public class CharController : MonoBehaviour {
 	// Update is called once per frame
 	void LateUpdate () {
 		current_state.update (this);
-		if (NPC) {
+		if (char_type == CharType.NPC|| char_type == CharType.NPC_Melee) {
 			//Debug.Log (root.get_path ());
 			if (!root.IsActive)
 				root.Activate (gameObject);
@@ -356,7 +400,7 @@ public class CharController : MonoBehaviour {
         if (god_mode) return;
 		health -= damage;
 		if (health < 0) {
-			if(NPC)
+			if(char_type == CharType.NPC|| char_type == CharType.NPC_Melee)
 				GameObject.Destroy (gameObject);
 
 			rigid.constraints = RigidbodyConstraints2D.FreezeAll;
