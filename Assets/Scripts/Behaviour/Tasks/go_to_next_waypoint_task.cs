@@ -27,10 +27,8 @@ public class go_to_next_waypoint_task:Task
 		} 
 			
 		if (cc.Path.Count > 0){
-			Debug.Log ("Hey da ist noch weg.");
 			parentNode.ChildTerminated (go,this, true);
 		} else {
-			Debug.Log ("Warum ist der Weg weg.");
 			parentNode.ChildTerminated (go,this, false);
 		}
 
