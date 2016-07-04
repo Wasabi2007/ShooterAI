@@ -300,7 +300,7 @@ public class CharController : MonoBehaviour {
 		foreach(var w in weapons){
 			w.gameObject.SetActive (false);
 		}
-		weapons[selected_weapon].gameObject.SetActive (false);
+		weapons[selected_weapon].gameObject.SetActive (true);
 
 		if(char_type == CharType.NPC){
 			setup_normal_ki();
