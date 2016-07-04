@@ -348,7 +348,7 @@ public class CharController : MonoBehaviour {
 
 	public bool has_free_shoot (Vector3 target_position){
 		var rel_pos = (Vector2)target_position-rigid.position;
-		var hit = Physics2D.Raycast (rigid.position, rel_pos.normalized);
+		var hit = Physics2D.Raycast (rigid.position, rel_pos.normalized,rel_pos.magnitude,CoverLayer);
 		return !hit;
 	}
 
