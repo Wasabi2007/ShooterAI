@@ -21,6 +21,7 @@ public class Selector : BehaviourNode {
 		child.Deactivate (go);
 		if (childIndex >= childNodes.Count) {
 			if(!isRoot){
+				Debug.Log ("Selector returned :"+result);
 				parentNode.ChildTerminated(go,this,result);
 			}else{
 				Deactivate(go);
@@ -33,6 +34,7 @@ public class Selector : BehaviourNode {
 			childIndex++;
 		} else {
 			if(!isRoot){
+				Debug.Log ("Selector returned true");
 				parentNode.ChildTerminated(go,this,true);
 			}else{
 				Deactivate(go);

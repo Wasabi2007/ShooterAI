@@ -25,6 +25,7 @@ public class UtilFail : BehaviourNode {
 	{
 		ChildNodes [0].Deactivate (go);
 		if (result) {
+			Debug.Log ("Rinse and repeat");
 			ChildNodes [0].Activate (go);
 		} else {
 			if (parentNode != null) {

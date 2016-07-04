@@ -234,30 +234,44 @@ public class CharController : MonoBehaviour {
 	void setup_melee_ki(){
 		root = new UtilFail ();
 		{
-			var sequence00 = new Sequence ();
+			var parallel = new ParralelNode ();
 			{
 				var sequence01 = new Sequence ();
 				{
 					var player_find = new find_player_task();
-					var unitlfail = new UtilFail();
+					var unitlfail = new UtilFail(true);
 					{
 						var selector01 = new Selector ();
 						{
 							var player_moved = new target_moved_condition();
+							var see_player = new has_target_in_eyesigth_contiditon("Player");
 							var next_waypoint = new  go_to_next_waypoint_task();
 							selector01.AddChild (player_moved);
+							selector01.AddChild (see_player);
 							selector01.AddChild (next_waypoint);
 						}
 						unitlfail.AddChild(selector01);
 					}
+					var unitlfail2 = new UtilFail(true);
+					{
+						var sequence02 = new Sequence ();
+						{
+							var see_player = new has_target_in_eyesigth_contiditon("Player");
+							var charge = new  charge_target_task("Player");
+							sequence02.AddChild (see_player);
+							sequence02.AddChild (charge);
+						}
+						unitlfail2.AddChild(sequence02);
+					}
+					sequence01.AddChild (unitlfail2);
 					sequence01.AddChild (player_find);
 					sequence01.AddChild (unitlfail);
 				}
 				var attack = new shoot_on_target_task("Player");
-				sequence00.AddChild (sequence01);
-				sequence00.AddChild (attack);
+				parallel.AddChild (sequence01);
+				parallel.AddChild (attack);
 			}
-			root.AddChild (sequence00);
+			root.AddChild (parallel);
 		}
 	}
 

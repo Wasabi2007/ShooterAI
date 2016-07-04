@@ -46,7 +46,7 @@ public class MeleeWeapon : Weapon
 		}
 		//StartCoroutine("rotate_animation");
 
-		return ammo > 0;
+		return ammo != 0;
 	}
 }
 

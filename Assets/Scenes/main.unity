@@ -7653,6 +7653,10 @@ Prefab:
       propertyPath: ammo_max
       value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 11493494, guid: c8bd3dbe1d1b7497faaeb25abafbebb3, type: 2}
+      propertyPath: CoverLayer.m_Bits
+      value: 9216
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c8bd3dbe1d1b7497faaeb25abafbebb3, type: 2}
   m_IsPrefabParent: 0
@@ -16002,6 +16006,10 @@ Prefab:
     - target: {fileID: 167184, guid: e1ec5d1d556be416b849df8032af3eee, type: 2}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11430642, guid: e1ec5d1d556be416b849df8032af3eee, type: 2}
+      propertyPath: CoverLayer.m_Bits
+      value: 9216
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e1ec5d1d556be416b849df8032af3eee, type: 2}
@@ -33605,6 +33613,10 @@ Prefab:
     - target: {fileID: 11469750, guid: 4b94ca5fdf322774bb2c9f773019bb69, type: 2}
       propertyPath: char_type
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11469750, guid: 4b94ca5fdf322774bb2c9f773019bb69, type: 2}
+      propertyPath: CoverLayer.m_Bits
+      value: 9216
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4b94ca5fdf322774bb2c9f773019bb69, type: 2}

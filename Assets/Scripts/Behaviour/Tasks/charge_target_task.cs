@@ -13,8 +13,10 @@ public class charge_target_task : Task
 	public override void Update (float dt, GameObject go)
 	{
 		var cc = go.GetComponent<CharController> ();
-		var target = GameObject.FindGameObjectWithTag (tag_); //replace this with the Objects function for multiplayer
-		cc.walk_to_target(target.transform.position);
+		var target = GameObject.FindGameObjectWithTag (tag_); //replace this with the Objects function for multiplayer#
+		var dir = target.transform.position-cc.transform.position;
+		cc.movedirection (dir.normalized);
+		Debug.Log (dir.normalized);
 
 		parentNode.ChildTerminated (go, this, true);
 
