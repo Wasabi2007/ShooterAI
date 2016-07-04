@@ -16,7 +16,6 @@ public class charge_target_task : Task
 		var target = GameObject.FindGameObjectWithTag (tag_); //replace this with the Objects function for multiplayer#
 		var dir = target.transform.position-cc.transform.position;
 		cc.movedirection (dir.normalized);
-		Debug.Log (dir.normalized);
 
 		parentNode.ChildTerminated (go, this, true);
 

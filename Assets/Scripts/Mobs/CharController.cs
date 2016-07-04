@@ -236,40 +236,59 @@ public class CharController : MonoBehaviour {
 		{
 			var parallel = new ParralelNode ();
 			{
-				var sequence01 = new Sequence ();
+				var unitlfail4 = new UtilFail(true);
 				{
-					var player_find = new find_player_task();
-					var unitlfail = new UtilFail(true);
+					var sequence01 = new Sequence ();
 					{
-						var selector01 = new Selector ();
+						var player_find = new find_player_task ();
+						var unitlfail = new UtilFail (true);
 						{
-							var player_moved = new target_moved_condition();
-							var see_player = new has_target_in_eyesigth_contiditon("Player");
-							var next_waypoint = new  go_to_next_waypoint_task();
-							selector01.AddChild (player_moved);
-							selector01.AddChild (see_player);
-							selector01.AddChild (next_waypoint);
+							var sequence03 = new Sequence ();
+							{
+								var selector01 = new Selector ();
+								{
+									var player_moved = new target_moved_condition ();
+									var see_player = new has_target_in_eyesigth_contiditon ("Player");
+									var next_waypoint = new  go_to_next_waypoint_task ();
+									selector01.AddChild (player_moved);
+									selector01.AddChild (see_player);
+									selector01.AddChild (next_waypoint);
+								}
+								var not_node = new Not ();
+								{
+									var see_player2 = new has_target_in_eyesigth_contiditon ("Player");
+									not_node.AddChild (see_player2);
+								}
+
+								sequence03.AddChild (selector01);
+								sequence03.AddChild (not_node);
+							}
+							unitlfail.AddChild (sequence03);
 						}
-						unitlfail.AddChild(selector01);
-					}
-					var unitlfail2 = new UtilFail(true);
-					{
-						var sequence02 = new Sequence ();
+						var unitlfail2 = new UtilFail (true);
 						{
-							var see_player = new has_target_in_eyesigth_contiditon("Player");
-							var charge = new  charge_target_task("Player");
-							sequence02.AddChild (see_player);
-							sequence02.AddChild (charge);
+							var sequence02 = new Sequence ();
+							{
+								var see_player = new has_target_in_eyesigth_contiditon ("Player");
+								var charge = new  charge_target_task ("Player");
+								sequence02.AddChild (see_player);
+								sequence02.AddChild (charge);
+							}
+							unitlfail2.AddChild (sequence02);
 						}
-						unitlfail2.AddChild(sequence02);
+						sequence01.AddChild (unitlfail2);
+						sequence01.AddChild (player_find);
+						sequence01.AddChild (unitlfail);
 					}
-					sequence01.AddChild (unitlfail2);
-					sequence01.AddChild (player_find);
-					sequence01.AddChild (unitlfail);
+					unitlfail4.AddChild (sequence01);
 				}
-				var attack = new shoot_on_target_task("Player");
-				parallel.AddChild (sequence01);
-				parallel.AddChild (attack);
+				var unitlfail3 = new UtilFail(true);
+				{
+					var attack = new shoot_on_target_task("Player");
+					unitlfail3.AddChild (attack);
+				}
+				parallel.AddChild (unitlfail4);
+				parallel.AddChild (unitlfail3);
 			}
 			root.AddChild (parallel);
 		}

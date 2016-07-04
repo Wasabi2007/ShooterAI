@@ -16,8 +16,6 @@ public class has_target_in_eyesigth_contiditon : Task
 		var target = GameObject.FindGameObjectWithTag (tag_); //replace this with the Objects function for multiplayer
 		var result = cc.has_free_shoot(target.transform.position);
 
-		Debug.Log ("result: "+result);
-
 		parentNode.ChildTerminated (go, this, result);
 
 	}
