@@ -108,7 +108,7 @@ public class CharController : MonoBehaviour {
 				var parallel3 = new ParralelNode ();
 				{
 
-					var enough_health = new has_health_condition (health_max * 0.2f);
+					var enough_health = new has_health_condition (health_max * 0.3f);
 					var selector = new Selector ();
 					{
 						var until_fail = new UtilFail (false);

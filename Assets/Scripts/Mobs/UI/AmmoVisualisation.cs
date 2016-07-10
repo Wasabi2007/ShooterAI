@@ -12,6 +12,8 @@ public class AmmoVisualisation : MonoBehaviour {
 
 	private float spritescaleing;
 	private int rows;
+	public int calc_cols;
+
 
 	private List<UnityEngine.UI.Image> ammos = new List<UnityEngine.UI.Image>();
 
@@ -22,10 +24,21 @@ public class AmmoVisualisation : MonoBehaviour {
 
 		RectTransform rt = GetComponent<RectTransform> ();
 
-		var zwich = (rt.rect.width / cols);
-		spritescaleing = zwich/ammo_sprite.rect.width;
-		rows = Mathf.CeilToInt (rt.rect.height/(ammo_sprite.rect.height*spritescaleing));
-        if (rows * cols > char_controller.ammo_max) rows--;
+		calc_cols = cols;
+
+		if (char_controller.ammo_max < cols) {
+			calc_cols = char_controller.ammo_max;
+			rows = 1;
+			var zwich = (rt.rect.width / calc_cols);
+			spritescaleing = zwich / ammo_sprite.rect.width;
+		} else {
+
+			var zwich = (rt.rect.width / calc_cols);
+			spritescaleing = zwich / ammo_sprite.rect.width;
+			rows = Mathf.CeilToInt (rt.rect.height / (ammo_sprite.rect.height * spritescaleing));
+			if (rows * calc_cols > char_controller.ammo_max)
+				rows--;
+		}
 
 		Transform[] allTransforms = gameObject.GetComponentsInChildren<Transform>();
 
@@ -36,7 +49,7 @@ public class AmmoVisualisation : MonoBehaviour {
 		ammos.Clear ();
 
 		for (int y = 0; y < rows; ++y) {
-			for (int x = 0; x < cols; ++x) {
+			for (int x = 0; x < calc_cols; ++x) {
 				GameObject go = new GameObject();
 				go.transform.parent = transform;
 				UnityEngine.UI.Image r = go.AddComponent<UnityEngine.UI.Image> ();
@@ -60,7 +73,7 @@ public class AmmoVisualisation : MonoBehaviour {
 
 
 		for (int y = 0; y < rows; ++y) {
-			for (int x = 0; x < cols; ++x) {
+			for (int x = 0; x < calc_cols; ++x) {
 				ammos [y*cols+x].color = (y*cols+x<char_controller.ammo ? Color.white:Color.grey);
 			}
 		}

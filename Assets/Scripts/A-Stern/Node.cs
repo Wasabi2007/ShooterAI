@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 
-[ExecuteInEditMode]
+//[ExecuteInEditMode]
 public class Node : MonoBehaviour {
 
 	public enum direction{
@@ -128,6 +128,8 @@ public class Node : MonoBehaviour {
 				real_value -= full_cover_value;
 
 			}
+
+			GameObject.DestroyImmediate (GetComponent<CircleCollider2D> ());
 		}
 	}
 
@@ -147,8 +149,12 @@ public class Node : MonoBehaviour {
 		if(!Connection.Contains(n))
 			Connection.Add(n);
 	}
-
+	
+}
 	void OnDrawGizmos(){
+		if (cover_direction.Count > 0) {
+			transform.localRotation = Quaternion.AngleAxis ((float)cover_direction [0], Vector3.forward);
+			cover_direction = cover_direction;
 
 		Random.seed = 42;
 		foreach (Node n in Connection) {
